@@ -1,0 +1,73 @@
+<% include header.ejs %>
+    <style media="screen">
+        #login_panel {
+            width: 500px;
+            margin-top: 100px;
+        }
+
+        #login_panel h2 {
+            text-align: center;
+        }
+    </style>
+    <div class="ui raised very padded text container segment" id="login_panel">
+        <h2 class="ui header">实验中心教学管理系统</h2>
+        <form class="ui form" id="login_form">
+            <div class="field">
+                <label><i class="user icon"></i>账号：</label>
+                <input type="text" name="account" placeholder="account">
+            </div>
+            <div class="field">
+                <label><i class="privacy icon"></i>密码：</label>
+                <input type="password" name="password" placeholder="password">
+            </div>
+            <!-- <div class="field">
+                <div class="ui checkbox">
+                    <input type="checkbox" tabindex="0" class="hidden">
+                    <label>保持登录一周</label>
+                </div>
+            </div> -->
+            <button class="ui button" type="submit" id="submit">登录</button>
+        </form>
+    </div>
+
+    <div class="ui basic modal">
+        <i class="close icon"></i>
+        <div class="header" id="login_tips"></div>
+        <div class="actions">
+        </div>
+    </div>
+    <script>
+        $('.ui.checkbox').checkbox();
+        $('#submit').on('click', function(e) {
+            e.preventDefault();
+
+            var data = {
+                account: $('input[name="account"]').val(),
+                password: $('input[name="password"]').val()
+            }
+            console.log(data)
+            if (!(data.account && data.password)) {
+                alert('你输入的信息不完整！');
+                return;
+            }
+            $.post("/login", data, function(data) {
+                console.log(data)
+                switch (data.code) {
+                    case '200':
+                        $('#login_tips').text(data.msg + '......，您将在1.5秒后跳转到主页面');
+                        window.setTimeout(function() {
+                            var url = 'http://' + location.host + '/menu';
+                            window.location.assign(url)
+                        }, 1500)
+                        break;
+                    case '500':
+                        $('#login_tips').text(data.msg);
+                        break;
+                    default:
+                        $('#login_tips').text(data.msg);
+                }
+                $('.ui.basic.modal').modal('show');
+            });
+        })
+    </script>
+    <% include footer.ejs %>
