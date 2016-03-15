@@ -1,14 +1,30 @@
 var express = require('express');
 var router = express.Router();
+var userDao = require('../../dao/userDao.js');
 
 //menu路由系统
+
+router.get('/',checkIsLogin);
 router.get('/',function(req,res,next){
-    res.send('这是菜单页');
-    res.end();
+    var userId = req.session.userId;
+
+    userDao.queryById(userId,function(data){
+        res.render('menu',{
+            title:'菜单',
+            type:data.type,
+            name:data.name
+        });
+    })
 })
-router.get('/b',function(req,res,next){
-    res.send('这是b页');
-    res.end();
-})
+
+
+function checkIsLogin(req,res,next){
+    var userId = req.session.userId;
+    if(userId){
+        next();
+    }else{
+        res.redirect(301,'./login');
+    }
+}
 
 module.exports = router;
