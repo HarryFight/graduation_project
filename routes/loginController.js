@@ -1,14 +1,12 @@
-var express = require('express');
-var router = express.Router();
 var userDao = require('../dao/userDao.js');
 
-//login路由系统
-router.get('/', function(req, res, next) {
+exports.getLogin = function(req,res,next){
     res.render('login', {
         title: '登录'
     })
-})
-router.post('/', function(req, res, next) {
+}
+
+exports.doLogin = function(req,res,next){
     var param = {
         account: req.param('account'),
         password: req.param('password')
@@ -42,14 +40,11 @@ router.post('/', function(req, res, next) {
                 })
         }
     })
-});
+}
 
-//用户登出
-router.get('/out',function(req,res,next){
+exports.getLogout = function(req,res,next){
     //清除session的信息
     req.session.userId = '';
-    
-    res.redirect(301,'/');
-})
 
-module.exports = router;
+    res.redirect(301,'/');
+}

@@ -3,6 +3,15 @@ var router = express.Router();
 var userDao = require('../../dao/userDao.js');
 
 //menu路由系统
+function checkIsLogin(req,res,next){
+    var userId = req.session.userId;
+    if(userId){
+        next();
+    }else{
+        res.redirect(301,'./login');
+    }
+}
+
 
 router.get('/',checkIsLogin);
 router.get('/',function(req,res,next){
@@ -18,13 +27,5 @@ router.get('/',function(req,res,next){
 })
 
 
-function checkIsLogin(req,res,next){
-    var userId = req.session.userId;
-    if(userId){
-        next();
-    }else{
-        res.redirect(301,'./login');
-    }
-}
 
 module.exports = router;

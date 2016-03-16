@@ -1,11 +1,12 @@
 var express = require('express');
 var path = require('path');
-// var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var http = require('http');
 var session = require('express-session')
+//flash 是一个在 session 中用于存储信息的特定区域。信息写入 flash ，下一次显示完毕后即被清除。
+var flash = require('connect-flash');
 
 var routes = require('./routes/index');
 
@@ -29,6 +30,9 @@ app.use(session({
         httpOnly:true
     }
 }))
+
+//启用flash中间件,通过它保存的变量生命周期是用户当前和下一次请求，之后会被清除。
+app.use(flash());
 
 //主路由
 app.use('/', routes);
