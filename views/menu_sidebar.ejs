@@ -29,13 +29,14 @@
         <div class="admin-sidebar am-offcanvas" id="admin-offcanvas">
             <div class="am-offcanvas-bar admin-offcanvas-bar">
                 <ul class="am-list admin-sidebar-list">
+                    <li><a href="./menu"><span class="am-icon-home"></span> 首页 </a></li>
+                    <li><a href="admin-table.html"><span class="am-icon-table"></span> 个人信息 </a></li>
+                    <li><a href="admin-table.html"><span class="am-icon-table"></span> 修改密码 </a></li>
                     <% if(type == 3){ %>
                     <!-- 这是学生的导航 -->
-                    <li><a href="admin-index.html"><span class="am-icon-home"></span> 首页 </a></li>
-                    <li><a href="admin-table.html"><span class="am-icon-table"></span> 个人信息 </a></li>
                     <li class="admin-parent">
                         <a class="am-cf" data-am-collapse="{target: '#collapse-nav1'}"><span class="am-icon-file"></span> 实验管理 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
-                        <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav1">
+                        <ul class="am-list am-collapse admin-sidebar-sub " id="collapse-nav1">
                             <li><a href="admin-404.html"><span class="am-icon-bug"></span> 查看实验指导书 </a></li>
                             <li><a href="admin-404.html"><span class="am-icon-bug"></span> 提交实验报告 </a></li>
                         </ul>
@@ -45,25 +46,23 @@
                     <!-- end -->
                     <% }else if(type == 2){ %>
                     <!-- 这是老师的导航 -->
-                    <li><a href="admin-index.html"><span class="am-icon-home"></span> 首页 </a></li>
-                    <li><a href="admin-table.html"><span class="am-icon-table"></span> 个人信息 </a></li>
                     <li class="admin-parent">
                         <a class="am-cf" data-am-collapse="{target: '#collapse-nav1'}"><span class="am-icon-file"></span> 实验管理 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
-                        <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav1">
+                        <ul class="am-list am-collapse admin-sidebar-sub " id="collapse-nav1">
                             <li><a href="admin-404.html"><span class="am-icon-bug"></span> 查看实验指导书 </a></li>
                             <li><a href="admin-404.html"><span class="am-icon-bug"></span> 提交实验报告 </a></li>
                         </ul>
                     </li>
                     <li class="admin-parent">
                         <a class="am-cf" data-am-collapse="{target: '#collapse-nav2'}"><span class="am-icon-file"></span> 成绩管理 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
-                        <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav2">
+                        <ul class="am-list am-collapse admin-sidebar-sub " id="collapse-nav2">
                             <li><a href="admin-404.html"><span class="am-icon-bug"></span> 成绩录入 </a></li>
                             <li><a href="admin-404.html"><span class="am-icon-bug"></span> 成绩查看 </a></li>
                         </ul>
                     </li>
                     <li class="admin-parent">
                         <a class="am-cf" data-am-collapse="{target: '#collapse-nav3'}"><span class="am-icon-file"></span> 实验设备管理 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
-                        <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav3">
+                        <ul class="am-list am-collapse admin-sidebar-sub " id="collapse-nav3">
                             <li><a href="admin-404.html"><span class="am-icon-bug"></span> 损坏登记 </a></li>
                         </ul>
                     </li>
@@ -71,25 +70,23 @@
                     <!-- end -->
                     <% }else if(type == 1){ %>
                     <!-- 这是管理员的导航 -->
-                    <li><a href="admin-index.html"><span class="am-icon-home"></span> 首页 </a></li>
-                    <li><a href="admin-table.html"><span class="am-icon-table"></span> 个人信息 </a></li>
                     <li class="admin-parent">
                         <a class="am-cf" data-am-collapse="{target: '#collapse-nav1'}"><span class="am-icon-file"></span> 用户管理 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
-                        <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav1">
+                        <ul class="am-list am-collapse admin-sidebar-sub " id="collapse-nav1">
                             <li><a href="admin-404.html"><span class="am-icon-bug"></span> 新增用户 </a></li>
                             <li><a href="admin-404.html"><span class="am-icon-bug"></span> 查看当前用户列表 </a></li>
                         </ul>
                     </li>
                     <li class="admin-parent">
                         <a class="am-cf" data-am-collapse="{target: '#collapse-nav2'}"><span class="am-icon-file"></span> 课程管理 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
-                        <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav2">
+                        <ul class="am-list am-collapse admin-sidebar-sub " id="collapse-nav2">
                             <li><a href="admin-404.html"><span class="am-icon-bug"></span> 新增课程 </a></li>
                             <li><a href="admin-404.html"><span class="am-icon-bug"></span> 查看当前课程列表 </a></li>
                         </ul>
                     </li>
                     <li class="admin-parent">
                         <a class="am-cf" data-am-collapse="{target: '#collapse-nav3'}"><span class="am-icon-file"></span> 实验设备管理 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
-                        <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav3">
+                        <ul class="am-list am-collapse admin-sidebar-sub " id="collapse-nav3">
                             <li><a href="admin-404.html"><span class="am-icon-bug"></span> 新增设备 </a></li>
                             <li><a href="admin-404.html"><span class="am-icon-bug"></span> 查看当前设备列表 </a></li>
                         </ul>
