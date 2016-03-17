@@ -153,14 +153,3 @@ exports.jsonEncode = function jsonEncode(val) {
 exports.jsonDecode = function jsonDecode(val) {
     return JSON.parse(val);
 };
-
-exports.jsonWrite = function jsonWrite(res, ret) {
-    if (typeof ret === 'undefined') {
-        res.json({
-            code: '1',
-            msg: '操作失败'
-        })
-    } else {
-        res.json(ret);
-    }
-}

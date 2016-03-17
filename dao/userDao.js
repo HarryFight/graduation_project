@@ -6,7 +6,19 @@ var pool = mysql.createPool($conf.mysql);
 
 module.exports = {
     add: function() {},
-    updateById: function(id, callback) {},
+    updateById: function(id,data,callback) {
+        // acount password name sex class grade college 可以更改
+        pool.getConnection(function(err,connection){
+            var sql = 'update user set account="'+data.account+'",password="'+data.password+'",name="'+data.name+'",sex='+data.sex+',class="'+data.class+'",grade="'+data.grade+'",college="'+data.college+'" where id='+id;
+            connection.query(sql,function(err,result){
+                if(result.affectedRows > 0){
+                    callback({code:1,msg:'用户UIN:'+data.uin+' 数据更新成功'})
+                }else{
+                    callback({code:0,msg:'用户UIN:'+data.uin+' 数据更新失败'})
+                }
+            })
+        })
+    },
     queryById: function(id, callback) {
         pool.getConnection(function(err, connection) {
             var sql = 'select * from user where id ="' + id + '"';

@@ -1,79 +1,85 @@
 <% include menu_sidebar.ejs %>
-<!-- content start -->
-<div class="admin-content">
-    <div class="am-cf am-padding">
-        <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">个人资料</strong> / <small>Personal information</small></div>
-    </div>
+    <!-- content start -->
+    <style>
+        .xy-info-render{
+            height: 37px;
+            line-height: 37px;
+        }
+    </style>
+    <div class="admin-content">
+        <div class="am-cf am-padding">
+            <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">个人资料</strong> / <small>Personal information</small></div>
+        </div>
 
-    <hr/>
+        <hr/>
 
-    <div class="am-g">
-        <div class="am-u-sm-8">
-            <form class="am-form am-form-horizontal">
+        <div class="am-g">
+            <div class="am-u-sm-8">
+                <form class="am-form am-form-horizontal" action='./info_modify' method="post">
 
-                <div class="am-form-group">
-                    <label for="user-uin" class="am-u-sm-3 am-form-label">学（工）号 / UIN</label>
-                    <div class="am-u-sm-9">
-                        <input type="text" id="user-uin" name="user-uin" placeholder="学（工）号 / UIN">
+                    <div class="am-form-group">
+                        <label for="user-uin" class="am-u-sm-3 am-form-label">学（工）号 / UIN</label>
+                        <div class="am-u-sm-9 xy-info-render">
+                            <%= user_uin %>
+                        </div>
                     </div>
-                </div>
 
-                <div class="am-form-group">
-                    <label for="user-name" class="am-u-sm-3 am-form-label">姓名 / Name</label>
-                    <div class="am-u-sm-9">
-                        <input type="text" id="user-name" name="user-name" placeholder="姓名 / Name">
+                    <div class="am-form-group">
+                        <label for="user-name" class="am-u-sm-3 am-form-label">姓名 / Name</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" id="user-name" name="name" placeholder="姓名 / Name" value="<%= user_name %>">
+                        </div>
                     </div>
-                </div>
 
-                <div class="am-form-group">
-                    <label class="am-u-sm-3 am-form-label">性别 / sex</label>
-                    <div class="am-u-sm-9"  style="margin-top:10px">
-                        <input type="radio" name="user-sex" value="1" checked> 男
-                        <input type="radio" name="user-sex" value="2"> 女
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">性别 / sex</label>
+                        <div class="am-u-sm-9" style="margin-top:10px">
+                            <% if(user_type == 1){ %>
+                                <input type="radio" name="sex" value="1" checked> 男
+                                <input type="radio" name="sex" value="2"> 女
+                            <% }else{ %>
+                                <input type="radio" name="sex" value="1"> 男
+                                <input type="radio" name="sex" value="2" checked> 女
+                            <% } %>
+                        </div>
                     </div>
-                </div>
 
-                <div class="am-form-group">
-                    <label for="user-type" class="am-u-sm-3 am-form-label">用户类型 / type</label>
-                    <div class="am-u-sm-9">
-                        <select name='user-type' id='user-type'>
-                            <option value="1">管理员</option>
-                            <option value="2" selected>老师</option>
-                            <option value="3">学生</option>
-                        </select>
-                        <span class="am-form-caret"></span>
+                    <div class="am-form-group">
+                        <label for="user-type" class="am-u-sm-3 am-form-label">用户类型 / type</label>
+                        <div class="am-u-sm-9 xy-info-render">
+                            <%= user_type %>
+                        </div>
                     </div>
-                </div>
 
-                <div class="am-form-group">
-                    <label for="user-grade" class="am-u-sm-3 am-form-label">年级 / grade</label>
-                    <div class="am-u-sm-9">
-                        <input type="text" id="user-grade" name="user-grade" placeholder="所在年级 / grade">
+                    <div class="am-form-group">
+                        <label for="user-grade" class="am-u-sm-3 am-form-label">年级 / grade</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" id="user-grade" name="grade" placeholder="所在年级 / grade" value="<%= user_grade %>">
+                        </div>
                     </div>
-                </div>
 
-                <div class="am-form-group">
-                    <label for="user-class" class="am-u-sm-3 am-form-label">班级 / class</label>
-                    <div class="am-u-sm-9">
-                        <input type="text" id="user-class" name="user-class" placeholder="班级 / class">
+                    <div class="am-form-group">
+                        <label for="user-class" class="am-u-sm-3 am-form-label">班级 / class</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" id="user-class" name="class" placeholder="班级 / class" value="<%= user_class %>">
+                        </div>
                     </div>
-                </div>
 
-                <div class="am-form-group">
-                    <label for="user-college" class="am-u-sm-3 am-form-label">学院 / college</label>
-                    <div class="am-u-sm-9">
-                        <input type="text" id="user-college" name="user-college" placeholder="学院 / college">
+                    <div class="am-form-group">
+                        <label for="user-college" class="am-u-sm-3 am-form-label">学院 / college</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" id="user-college" name="college" placeholder="学院 / college" value="<%= user_college %>">
+                        </div>
                     </div>
-                </div>
 
-                <div class="am-form-group">
-                    <div class="am-u-sm-9 am-u-sm-push-3">
-                        <button type="button" class="am-btn am-btn-primary">保存修改</button>
+                    <div class="am-form-group">
+                        <div class="am-u-sm-9 am-u-sm-push-3">
+                            <button type="submit" class="am-btn am-btn-primary">保存修改</button>
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
-</div>
-<!-- content end -->
-<% include menu_sidebar_end.ejs %>
+    <!-- content end -->
+    <% include menu_sidebar_end.ejs %>

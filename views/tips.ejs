@@ -1,0 +1,34 @@
+<% include menu_sidebar.ejs %>
+        <!-- content start -->
+        <style media="screen">
+            .xy-text-success{
+                color:green;
+            }
+            .xy-text-fail{
+                color:red;
+            }
+        </style>
+        <div class="admin-content">
+            <div class="admin-content">
+                <div class="am-cf am-padding">
+                    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">提示信息</strong> / <small>tips</small></div>
+                </div>
+
+                <hr>
+
+                <div class="am-g">
+                    <div class="am-u-sm-12 am-u-sm-centered">
+                        <% if(flag == '1'){ %>
+                        <h2 class="xy-text-success"><%= msg %></h2>
+                        <% }else{ %>
+                        <h2 class="xy-text-fail"><%= msg %></h2>
+                        <% } %>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- content end -->
+
+<% include menu_sidebar_end.ejs %>

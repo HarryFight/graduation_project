@@ -1,6 +1,6 @@
 var userDao = require('../dao/userDao.js');
 
-exports.getLogin = function(req,res,next){
+exports.getLoginPage = function(req,res,next){
     res.render('login', {
         title: '登录'
     })
@@ -42,7 +42,7 @@ exports.doLogin = function(req,res,next){
     })
 }
 
-exports.getLogout = function(req,res,next){
+exports.doLogout = function(req,res,next){
     //清除session的信息
     req.session.userId = '';
 
