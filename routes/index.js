@@ -16,17 +16,19 @@ router.post('/login',loginC.doLogin);
 router.get('/logout',loginC.doLogout);
 
 
-
 //菜单
 //权限控制
 router.get('/menu/?*',menuC.checkIsLogin);
 router.get('/menu', menuC.getMenuPage);
 //通用页面
 router.get('/menu/tips',menuC.getTipsPage);
+
 router.get('/menu/user/info',menuC.getUserInfoPage);
 router.get('/menu/user/info_modify',menuC.getUserInfoModifyPage);
-router.post('/menu/user/info_modify',menuC.doUserInfoModifyPage);
+router.post('/menu/user/info_modify',menuC.doUserInfoModify);
 
+router.get('/menu/user/psw_modify',menuC.getPswModifyPage);
+router.post('/menu/user/psw_modify',menuC.doPswModify);
 
 //接口路由
 module.exports = router;

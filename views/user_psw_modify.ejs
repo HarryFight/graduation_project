@@ -1,0 +1,61 @@
+<% include menu_sidebar.ejs %>
+    <!-- content start -->
+    <div class="admin-content">
+        <div class="am-cf am-padding">
+            <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">修改密码</strong></div>
+        </div>
+
+        <hr/>
+
+        <div class="am-g">
+            <div class="am-u-sm-8">
+                <form class="am-form am-form-horizontal" action='./psw_modify' method="post">
+                    <div class="am-form-group">
+                        <label for="user-oldPsw" class="am-u-sm-3 am-form-label">旧密码：</label>
+                        <div class="am-u-sm-9">
+                            <input type="password" id="user-oldPsw" name="oldPsw"  value="">
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="user-newPsw" class="am-u-sm-3 am-form-label">新密码：</label>
+                        <div class="am-u-sm-9">
+                            <input type="password" id="user-newPsw" name="newPsw"  value="">
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="user-rnewPsw" class="am-u-sm-3 am-form-label">确认新密码：</label>
+                        <div class="am-u-sm-9">
+                            <input type="password" id="user-rnewPsw" name=""  value="">
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <div class="am-u-sm-9 am-u-sm-push-3">
+                            <button type="submit" class="am-btn am-btn-primary" id="btn_submit">保存修改</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+    $('#btn_submit').click(function(event) {
+        event.preventDefault();
+
+        var oldPsw = $('#user-oldPsw').val();
+        var newPsw = $('#user-newPsw').val();
+        var rnewPsw = $('#user-rnewPsw').val();
+
+        if(oldPsw == '' || newPsw == ''){
+            alert('请输入完整信息');
+        }else if(newPsw == rnewPsw){
+            console.log('提交');
+            $('.am-form').submit();
+        }else{
+            alert('两次输入新密码不一致')
+        }
+    });
+    </script>
+    <!-- content end -->
+    <% include menu_sidebar_end.ejs %>

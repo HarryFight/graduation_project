@@ -9,12 +9,18 @@ module.exports = {
     updateById: function(id,data,callback) {
         // acount password name sex class grade college 可以更改
         pool.getConnection(function(err,connection){
-            var sql = 'update user set account="'+data.account+'",password="'+data.password+'",name="'+data.name+'",sex='+data.sex+',class="'+data.class+'",grade="'+data.grade+'",college="'+data.college+'" where id='+id;
+            var fieldArr = [];
+            for(var key in data){
+                fieldArr.push(key+'="'+data[key]+'"');
+            }
+            var sql = 'update user set '+fieldArr.join(',')+' where id='+id;
+
+            // var sql2 = 'update user set account="'+data.account+'",password="'+data.password+'",name="'+data.name+'",sex='+data.sex+',class="'+data.class+'",grade="'+data.grade+'",college="'+data.college+'" where id='+id;
             connection.query(sql,function(err,result){
                 if(result.affectedRows > 0){
-                    callback({code:1,msg:'用户UIN:'+data.uin+' 数据更新成功'})
+                    callback({code:1,msg:'用户（id:'+id+'） 数据更新成功'})
                 }else{
-                    callback({code:0,msg:'用户UIN:'+data.uin+' 数据更新失败'})
+                    callback({code:0,msg:'用户（id:'+id+'） 数据更新失败'})
                 }
             })
         })

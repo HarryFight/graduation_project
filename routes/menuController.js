@@ -8,7 +8,14 @@ exports.checkIsLogin = function(req, res, next) {
         res.redirect(301, '/login');
     }
 }
-
+exports.getTipsPage = function(req,res,next){
+    res.render('tips',{
+        title:'提示页',
+        type:req.session.userId,
+        flag:req.flash('flag'),
+        msg:req.flash('msg')
+    })
+}
 exports.getMenuPage = function(req, res, next) {
     var userId = req.session.userId;
 
@@ -60,34 +67,65 @@ exports.getUserInfoModifyPage = function(req,res,next){
         });
     })
 }
-exports.doUserInfoModifyPage = function(req,res,next){
+exports.doUserInfoModify = function(req,res,next){
     var userId = req.session.userId;
     var rData = req.body;
 
+    userDao.updateById(userId,rData,function(ret){
+        if(ret.code == 1){
+            req.flash('flag',1);
+            req.flash('msg',ret.msg);
+        }else{
+            req.flash('flag',0);
+            req.flash('msg',ret.msg);
+        }
+        res.redirect('../tips');
+    })
+}
+exports.getPswModifyPage = function(req,res,next){
+    var userId = req.session.userId;
+
+    userDao.queryById(userId, function(data) {
+        res.render('user_psw_modify', {
+            title: '修改密码',
+            type: data.type
+        });
+    })
+}
+exports.doPswModify = function(req,res,next){
+    var userId = req.session.userId;
+
     //先拿到原始数据
     userDao.queryById(userId,function(data){
-        var nData = toUserDataModel(rData,data)
-        //更新数据
-        userDao.updateById(userId,nData,function(ret){
-            if(ret.code == 1){
-                req.flash('flag',1);
-                req.flash('msg',ret.msg);
-            }else{
-                req.flash('flag',0);
-                req.flash('msg',ret.msg);
-            }
+
+        if(data.password == req.body.oldPsw){
+            var rData = {
+                password : req.body.newPsw
+            };
+            // var nData = toUserDataModel(rData,data)
+            //更新数据
+            userDao.updateById(userId,rData,function(ret){
+                if(ret.code == 1){
+                    req.flash('flag',1);
+                    req.flash('msg',ret.msg);
+                }else{
+                    req.flash('flag',0);
+                    req.flash('msg',ret.msg);
+                }
+                res.redirect('../tips');
+            })
+        }else{
+            req.flash('flag',0);
+            req.flash('msg','密码验证失败');
             res.redirect('../tips');
-        })
+        }
     })
 }
-exports.getTipsPage = function(req,res,next){
-    res.render('tips',{
-        title:'提示页',
-        type:req.session.userId,
-        flag:req.flash('flag'),
-        msg:req.flash('msg')
-    })
-}
+
+
+
+
+
 /**
  * 将数据转化为显示数据模型
  * @param  {[type]} userData [description]
