@@ -7,16 +7,14 @@ var pool = mysql.createPool($conf.mysql);
 module.exports = {
     add: function(data, callback) {
         pool.getConnection(function(err, connection) {
-            var sql = 'INSERT INTO user (type,account,password,name,sex,class,grade,college)' +
+            var sql = 'INSERT INTO course (type,name,teacher,week_time,day_time,class_time)' +
                 'VALUES ("' +
                 data.type + '","' +
-                data.account + '","' +
-                data.password + '","' +
                 data.name + '","' +
-                data.sex + '","' +
-                data.class + '","' +
-                data.grade + '","' +
-                data.college + '")';
+                data.teacher + '","' +
+                data.week_time + '","' +
+                data.day_time + '","' +
+                data.class_time + '")';
 
             connection.query(sql, function(err, result) {
                 if(err){
@@ -30,12 +28,12 @@ module.exports = {
                 if (result.affectedRows > 0) {
                     callback({
                         code: 1,
-                        msg: '新用户' + data.name + '添加成功'
+                        msg: '课程：' + data.name + ' 添加成功'
                     })
                 } else {
                     callback({
                         code: 0,
-                        msg: '用户添加失败'
+                        msg:  '课程：' + data.name + ' 添加失败'
                     })
                 }
 
@@ -127,7 +125,7 @@ module.exports = {
     queryAll: function(callback) {
         //从连接池中获取连接
         pool.getConnection(function(err, connection) {
-            var sql = 'select * from user';
+            var sql = 'select * from course';
             connection.query(sql, function(err, result) {
                 if(err){
                     callback({
@@ -150,7 +148,7 @@ module.exports = {
     queryAllByKey: function(key,val,callback){
         //从连接池中获取连接
         pool.getConnection(function(err, connection) {
-            var sql = 'select * from user where '+ key +' = "' + val + '"';
+            var sql = 'select * from course where '+ key +' = "' + val + '"';
             connection.query(sql, function(err, result) {
                 if(err){
                     callback({
@@ -172,7 +170,7 @@ module.exports = {
     },
     deleteById: function(id, callback) {
         pool.getConnection(function(err,connection){
-            var sql = 'DELETE FROM user where id='+id
+            var sql = 'DELETE FROM course where id='+id
             connection.query(sql,function(err,result){
                 if(err){
                     callback({

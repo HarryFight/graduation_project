@@ -24,8 +24,10 @@ router.get('/menu', menuC.getMenuPage);
 /* 通用页面 */
 router.get('/menu/tips',menuC.getTipsPage);
 router.get('/menu/user/info',menuC.getUserInfoPage);
+
 router.get('/menu/user/info_modify',menuC.getUserInfoModifyPage);
 router.post('/menu/user/info_modify',menuC.doUserInfoModify);
+
 router.get('/menu/user/psw_modify',menuC.getPswModifyPage);
 router.post('/menu/user/psw_modify',menuC.doPswModify);
 
@@ -34,8 +36,36 @@ router.all('/menu/m/?*',manageC.checkIsManager);
 router.get('/menu/m/addUser',manageC.getAddUserPage);
 router.post('/menu/m/addUser',manageC.doAddUser);
 router.get('/menu/m/userList',manageC.getUserListPage);
-//接口
+
+router.get('/menu/m/addCourse',manageC.getAddCoursePage);
+router.post('/menu/m/addCourse',manageC.doAddCourse);
+router.get('/menu/m/courseList',manageC.getCourseListPage);
+
+
+/* 所有接口 */
+
+/**
+ * 用户列表接口   type=1
+ * @param  {[type]} '/menu/m/getuserList.do' [description]
+ */
 router.get('/menu/m/getuserList.do',manageC.getUserListJson);
+
+/**
+ * 删除单个用户接口   id=1
+ * @param  {[type]} '/menu/m/deleteUser.do' [description]
+ */
 router.get('/menu/m/deleteUser.do',manageC.deleteUser);
+
+/**
+ * 课程列表接口   type=1
+ * @param  {[type]} '/menu/m/getuserList.do' [description]
+ */
+router.get('/menu/m/getcourseList.do',manageC.getCourseListJson);
+
+/**
+ * 删除单个课程接口   id=1
+ * @param  {[type]} '/menu/m/deleteUser.do' [description]
+ */
+router.get('/menu/m/deleteCourse.do',manageC.deleteCourse);
 
 module.exports = router;
