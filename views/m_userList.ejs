@@ -36,40 +36,7 @@
                             </tr>
                         </thead>
                         <tbody id='itemPanel'>
-                            <tr>
-                                <td>1</td>
-                                <td>管理01</a>
-                                </td>
-                                <td>学生</td>
-                                <th>男</th>
-                                <th>1301203班</th>
-                                <th>2012级</th>
-                                <th>XX学院</th>
-                                <td>
-                                    <div class="am-btn-toolbar">
-                                        <div class="am-btn-group am-btn-group-xs">
-                                            <button class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only"><span class="am-icon-trash-o"></span> 删除</button>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>管理01</a>
-                                </td>
-                                <td>学生</td>
-                                <th>男</th>
-                                <th>1301203班</th>
-                                <th>2012级</th>
-                                <th>XX学院</th>
-                                <td>
-                                    <div class="am-btn-toolbar">
-                                        <div class="am-btn-group am-btn-group-xs">
-                                            <button class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only"><span class="am-icon-trash-o"></span> 删除</button>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
+                            
                         </tbody>
                     </table>
                     <div class="am-cf">
@@ -89,8 +56,8 @@
             <td><#:= item.name #></td>
             <td><#:= item.type #></td>
             <th><#:= item.sex #></th>
-            <th><#:= item.class #></th>
-            <th><#:= item.grade #></th>
+            <th><#:= item.class #>班</th>
+            <th><#:= item.grade #>级</th>
             <th><#:= item.college #></th>
             <td>
                 <div class="am-btn-toolbar">
@@ -124,6 +91,15 @@
         $('#itemPanel').html('<p>数据加载中</p>');
         $.getJSON(prefix+"menu/m/getuserList.do", {type:type}, function(json){
             var data = json;
+            var sexMap = ['','男','女'];
+            var typeMap = ['','管理员','老师','学生']
+
+            $.each(data.data,function(index,item){
+                data.data[index].sex = sexMap[parseInt(item.sex)]
+                data.data[index].type = typeMap[parseInt(item.type)]
+            })
+
+            console.log(data)
             //避免和后端冲突
             template.config({sTag: '<#', eTag: '#>'});
             var itemTmpl = template($('#itemTmpl').text());
