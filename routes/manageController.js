@@ -43,3 +43,39 @@ exports.doAddUser = function(req, res, next) {
          }
     })
 }
+exports.getUserListPage = function(req,res,next){
+    var userId = req.session.userId;
+
+    res.render('m_userList', {
+        title: '用户列表',
+        type: 1
+    })
+}
+exports.getUserListJson = function(req,res,next){
+    var userId = req.session.userId;
+    var getType= req.query.type;
+
+    if(getType == '0'){
+        userDao.queryAll(function(ret){
+            res.json({
+                data:ret
+            })
+        })
+    }else{
+        userDao.queryAllByKey('type',getType,function(ret){
+            res.json({
+                data:ret
+            })
+        })
+    }
+}
+exports.deleteUser = function(req,res,next){
+    var deleteId = req.query.id;
+
+    userDao.deleteById(deleteId,function(ret){
+        res.json({
+            data:ret
+        })
+    })
+
+}

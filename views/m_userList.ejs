@@ -1,0 +1,147 @@
+<% include menu_sidebar.ejs %>
+
+    <!-- content start -->
+    <div class="admin-content">
+
+        <div class="am-cf am-padding">
+            <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">用户列表</strong> / <small>User list</small></div>
+        </div>
+
+        <div class="am-g">
+            <div class="am-u-sm-12 am-u-md-3">
+                <div class="am-form-group">
+                    <select data-am-selected="{btnSize: 'sm'}" id='btn_chooseType'>
+                        <option value="0" actived>所有用户</option>
+                        <option value="1">管理员</option>
+                        <option value="2">老师</option>
+                        <option value="3">学生</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="am-g">
+            <div class="am-u-sm-12">
+                    <table class="am-table am-table-striped am-table-hover table-main">
+                        <thead>
+                            <tr>
+                                <th class="table-id">ID</th>
+                                <th class="table-title">姓名</th>
+                                <th class="table-type">类别</th>
+                                <th>性别</th>
+                                <th>班级</th>
+                                <th>年级</th>
+                                <th>学院</th>
+                                <th class="table-set">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id='itemPanel'>
+                            <tr>
+                                <td>1</td>
+                                <td>管理01</a>
+                                </td>
+                                <td>学生</td>
+                                <th>男</th>
+                                <th>1301203班</th>
+                                <th>2012级</th>
+                                <th>XX学院</th>
+                                <td>
+                                    <div class="am-btn-toolbar">
+                                        <div class="am-btn-group am-btn-group-xs">
+                                            <button class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only"><span class="am-icon-trash-o"></span> 删除</button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>管理01</a>
+                                </td>
+                                <td>学生</td>
+                                <th>男</th>
+                                <th>1301203班</th>
+                                <th>2012级</th>
+                                <th>XX学院</th>
+                                <td>
+                                    <div class="am-btn-toolbar">
+                                        <div class="am-btn-group am-btn-group-xs">
+                                            <button class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only"><span class="am-icon-trash-o"></span> 删除</button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="am-cf">
+                        共 <i id='itemLen'></i> 条记录
+                    </div>
+                    <hr />
+            </div>
+
+        </div>
+    </div>
+    <!-- content end -->
+    <script type='text/plain' id="itemTmpl">
+    <# for(var i=0,len=data.length;i<len;i++){ #>
+        <# var item = data[i] #>
+        <tr>
+            <td><#:= item.id #></td>
+            <td><#:= item.name #></td>
+            <td><#:= item.type #></td>
+            <th><#:= item.sex #></th>
+            <th><#:= item.class #></th>
+            <th><#:= item.grade #></th>
+            <th><#:= item.college #></th>
+            <td>
+                <div class="am-btn-toolbar">
+                    <div class="am-btn-group am-btn-group-xs">
+                        <button class="am-btn am-btn-default am-text-danger xy-btn-delete" data-id='<#:= item.id #>'><span class="am-icon-trash-o"></span> 删除</button>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    <# } #>
+
+    </script>
+    <script src="http://localhost:3000/js/template.js"></script>
+    <script src="http://localhost:3000/js/common.js"></script>
+
+    <script>
+    loadData(0);
+
+    $('#btn_chooseType').change(function(){
+        loadData($('#btn_chooseType').val());
+    })
+
+    $('#itemPanel').delegate('.xy-btn-delete', 'click', function(event) {
+        var flag = confirm('确认要删除用户ID：'+$(this).attr('data-id'));
+        if(flag){
+            deleteItem($(this).attr('data-id'));
+        }
+    });
+
+    function loadData(type){
+        $('#itemPanel').html('<p>数据加载中</p>');
+        $.getJSON(prefix+"menu/m/getuserList.do", {type:type}, function(json){
+            var data = json;
+            //避免和后端冲突
+            template.config({sTag: '<#', eTag: '#>'});
+            var itemTmpl = template($('#itemTmpl').text());
+            var htmlStr = itemTmpl(data);
+
+            $('#itemPanel').text('');
+            $(htmlStr).appendTo('#itemPanel');
+            $('#itemLen').text(data.data.length);
+        });
+    }
+    function deleteItem(id){
+        $.getJSON(prefix+"menu/m/deleteUser.do", {id:id}, function(json){
+            var data = json;
+
+            alert(data.data.msg)
+            loadData($('#btn_chooseType').val());
+        });
+    }
+    </script>
+
+    <% include menu_sidebar_end.ejs %>

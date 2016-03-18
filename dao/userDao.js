@@ -7,7 +7,7 @@ var pool = mysql.createPool($conf.mysql);
 module.exports = {
     add: function(data, callback) {
         pool.getConnection(function(err, connection) {
-            var sql = 'INSERT INTO user (uin,type,account,password,name,sex,class,grade,college)' +
+            var sql = 'INSERT INTO user (type,account,password,name,sex,class,grade,college)' +
                 'VALUES ("' +
                 data.type + '","' +
                 data.account + '","' +
@@ -38,6 +38,9 @@ module.exports = {
                         msg: '用户添加失败'
                     })
                 }
+
+                //释放连接
+                connection.release();
             })
         })
     },
@@ -70,6 +73,9 @@ module.exports = {
                         msg: '用户（id:' + id + '） 数据更新失败'
                     })
                 }
+
+                //释放连接
+                connection.release();
             })
         })
     },
@@ -89,6 +95,9 @@ module.exports = {
                 } else {
                     callback({});
                 }
+
+                //释放连接
+                connection.release();
             })
         })
     },
@@ -109,11 +118,86 @@ module.exports = {
                 } else {
                     callback({});
                 }
+
+                //释放连接
+                connection.release();
             })
         })
     },
-    queryAll: function(callback) {},
-    deleteById: function(id, callback) {},
+    queryAll: function(callback) {
+        //从连接池中获取连接
+        pool.getConnection(function(err, connection) {
+            var sql = 'select * from user';
+            connection.query(sql, function(err, result) {
+                if(err){
+                    callback({
+                        code:-1,
+                        msg:'数据库操作错误'
+                    })
+                    return;
+                }
+                if (result.length) {
+                    callback(result);
+                } else {
+                    callback(result);
+                }
+
+                //释放连接
+                connection.release();
+            })
+        })
+    },
+    queryAllByKey: function(key,val,callback){
+        //从连接池中获取连接
+        pool.getConnection(function(err, connection) {
+            var sql = 'select * from user where '+ key +' = "' + val + '"';
+            connection.query(sql, function(err, result) {
+                if(err){
+                    callback({
+                        code:-1,
+                        msg:'数据库操作错误'
+                    })
+                    return;
+                }
+                if (result.length) {
+                    callback(result);
+                } else {
+                    callback(result);
+                }
+
+                //释放连接
+                connection.release();
+            })
+        })
+    },
+    deleteById: function(id, callback) {
+        pool.getConnection(function(err,connection){
+            var sql = 'DELETE FROM user where id='+id
+            connection.query(sql,function(err,result){
+                if(err){
+                    callback({
+                        code:-1,
+                        msg:'数据库操作错误'
+                    })
+                    return;
+                }
+                if (result.affectedRows > 0) {
+                    callback({
+                        code: 1,
+                        msg: '用户' + id + ' 删除成功'
+                    })
+                } else {
+                    callback({
+                        code: 0,
+                        msg: '用户'+ id +' 删除失败'
+                    })
+                }
+
+                //释放连接
+                connection.release();
+            })
+        })
+    },
     queryIsLogin: function(account, password, callback) {
         //从连接池中获取连接
         pool.getConnection(function(err, connection) {
@@ -137,6 +221,9 @@ module.exports = {
                 } else {
                     callback(-1);
                 }
+
+                //释放连接
+                connection.release();
             })
         })
     }
