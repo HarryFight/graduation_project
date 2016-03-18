@@ -1,0 +1,108 @@
+<% include menu_sidebar.ejs %>
+    <!-- content start -->
+    <div class="admin-content">
+        <div class="am-cf am-padding">
+            <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">新增用户</strong> / <small>add Personal information</small></div>
+        </div>
+
+        <hr/>
+
+        <div class="am-g">
+            <div class="am-u-sm-8">
+                <form class="am-form am-form-horizontal" action='./addUser' method="post">
+                    <div class="am-form-group">
+                        <label for="user-name" class="am-u-sm-3 am-form-label">姓名 / Name *</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" id="user-name" name="name" placeholder="姓名 / Name">
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">性别 / sex *</label>
+                        <div class="am-u-sm-9"  style="margin-top:10px">
+                            <input type="radio" name="sex" value="1" checked> 男
+                            <input type="radio" name="sex" value="2"> 女
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="user-type" class="am-u-sm-3 am-form-label">用户类型 / type *</label>
+                        <div class="am-u-sm-9">
+                            <select name='type' id='user-type'>
+                                <option value="1">管理员</option>
+                                <option value="2">老师</option>
+                                <option value="3" selected>学生</option>
+                            </select>
+                            <span class="am-form-caret"></span>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="user-grade" class="am-u-sm-3 am-form-label">年级 / grade</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" id="user-grade" name="grade" placeholder="所在年级 / grade">
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="user-class" class="am-u-sm-3 am-form-label">班级 / class</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" id="user-class" name="class" placeholder="班级 / class">
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="user-college" class="am-u-sm-3 am-form-label">学院 / college</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" id="user-college" name="college" placeholder="学院 / college">
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="am-form-group">
+                        <label for="user-oldPsw" class="am-u-sm-3 am-form-label">账号：*</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" id="user-account" name="account">
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="user-newPsw" class="am-u-sm-3 am-form-label">设置密码：*</label>
+                        <div class="am-u-sm-9">
+                            <input type="password" id="user-newPsw" name="password">
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="user-rnewPsw" class="am-u-sm-3 am-form-label">确认密码：*</label>
+                        <div class="am-u-sm-9">
+                            <input type="password" id="user-rnewPsw" name="">
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <div class="am-u-sm-9 am-u-sm-push-3">
+                            <button type="submit" class="am-btn am-btn-primary" id="btn_submit">保存</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+    $('#btn_submit').click(function(event) {
+        event.preventDefault();
+
+        var name = $('#user-name').val();
+        var sex = $('#user-sex').val();
+        var type = $('#user-type').val();
+        var account = $('#user-account').val();
+        var newPsw = $('#user-newPsw').val();
+        var rnewPsw = $('#user-rnewPsw').val();
+
+        if(account == '' || newPsw == '' || name == '' || sex == '' || type == ''){
+            alert('请输入完整信息');
+        }else if(newPsw == rnewPsw){
+            $('.am-form').submit();
+        }else{
+            alert('两次输入新密码不一致')
+        }
+    });
+    </script>
+    <!-- content end -->
+    <% include menu_sidebar_end.ejs %>

@@ -37,7 +37,7 @@ exports.getUserInfoPage = function(req, res, next) {
             title: '个人信息',
             type: data.type,
             name: data.name,
-            user_uin: nData.uin,
+            user_account:data.account,
             user_name: nData.name,
             user_sex: nData.sex,
             user_type: nData.type,
@@ -57,7 +57,7 @@ exports.getUserInfoModifyPage = function(req,res,next){
             title: '个人信息修改',
             type: data.type,
             name: data.name,
-            user_uin: data.uin,
+            user_account:data.account,
             user_name: data.name,
             user_sex: data.sex,
             user_type: nData.type,
@@ -136,7 +136,6 @@ function userModelParse(userData) {
     var typeMap = ['','管理员', '老师', '学生'];
 
     var nData = {
-        uin: userData.uin,
         name: userData.name,
         sex: sexMap[userData.sex],
         type: typeMap[userData.type],

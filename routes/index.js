@@ -3,6 +3,7 @@ var router = express.Router();
 
 var loginC = require('./loginController.js');
 var menuC = require('./menuController.js');
+var manageC = require('./manageController.js')
 
 //登录页跳转
 router.get('/', function(req, res, next) {
@@ -16,9 +17,9 @@ router.post('/login',loginC.doLogin);
 router.get('/logout',loginC.doLogout);
 
 
-//菜单
+//以下菜单内路由
 //权限控制
-router.get('/menu/?*',menuC.checkIsLogin);
+router.all('/menu/?*',menuC.checkIsLogin);
 router.get('/menu', menuC.getMenuPage);
 //通用页面
 router.get('/menu/tips',menuC.getTipsPage);
@@ -29,6 +30,11 @@ router.post('/menu/user/info_modify',menuC.doUserInfoModify);
 
 router.get('/menu/user/psw_modify',menuC.getPswModifyPage);
 router.post('/menu/user/psw_modify',menuC.doPswModify);
+
+//管理员权限路由
+router.all('/menu/u/?*',manageC.checkIsManager);
+router.get('/menu/m/addUser',manageC.getAddUserPage);
+router.post('/menu/m/addUser',manageC.doAddUser);
 
 //接口路由
 module.exports = router;
