@@ -92,6 +92,26 @@ module.exports = {
             })
         })
     },
+    queryByKey: function(key,val,callback){
+        //从连接池中获取连接
+        pool.getConnection(function(err, connection) {
+            var sql = 'select * from user where '+ key +' = "' + val + '"';
+            connection.query(sql, function(err, result) {
+                if(err){
+                    callback({
+                        code:-1,
+                        msg:'数据库操作错误'
+                    })
+                    return;
+                }
+                if (result.length) {
+                    callback(result[0]);
+                } else {
+                    callback({});
+                }
+            })
+        })
+    },
     queryAll: function(callback) {},
     deleteById: function(id, callback) {},
     queryIsLogin: function(account, password, callback) {
