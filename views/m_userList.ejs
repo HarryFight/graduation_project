@@ -36,7 +36,7 @@
                             </tr>
                         </thead>
                         <tbody id='itemPanel'>
-                            
+
                         </tbody>
                     </table>
                     <div class="am-cf">
@@ -99,7 +99,6 @@
                 data.data[index].type = typeMap[parseInt(item.type)]
             })
 
-            console.log(data)
             //避免和后端冲突
             template.config({sTag: '<#', eTag: '#>'});
             var itemTmpl = template($('#itemTmpl').text());

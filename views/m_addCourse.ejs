@@ -1,0 +1,82 @@
+<% include menu_sidebar.ejs %>
+    <!-- content start -->
+    <div class="admin-content">
+        <div class="am-cf am-padding">
+            <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">新增课程</strong> / <small>add Course information</small></div>
+        </div>
+
+        <hr/>
+
+        <div class="am-g">
+            <div class="am-u-sm-8">
+                <form class="am-form am-form-horizontal" action='./addCourse' method="post">
+                    <div class="am-form-group">
+                        <label for="course-name" class="am-u-sm-3 am-form-label">课程名 / Name *</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" id="course-name" name="name">
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="course-teacher" class="am-u-sm-3 am-form-label">任课教师 / Teacher </label>
+                        <div class="am-u-sm-9">
+                            <input type="text" id="course-teacher" name="teacher">
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="course-type" class="am-u-sm-3 am-form-label">课程类型 / Type *</label>
+                        <div class="am-u-sm-9">
+                            <select name='type' id='course-type'>
+                                <option value="1">必修</option>
+                                <option value="2">限选</option>
+                                <option value="3">选修</option>
+                            </select>
+                            <span class="am-form-caret"></span>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="am-form-group">
+                        <label for="course-week-time" class="am-u-sm-3 am-form-label">课程所在周 / week</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" id="course-week-time" name="week_time" placeholder="例如：1 2 3-8（使用空格区分）">
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="course-day-time" class="am-u-sm-3 am-form-label">课程所在星期 / day</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" id="course-day-time" name="day_time" placeholder="例如：1 2 3 7（使用空格区分）">
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="course-class-time" class="am-u-sm-3 am-form-label">课程所在节 / class</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" id="course-class-time" name="class_time" placeholder="例如：1 2 3 7-8 9-12（使用空格区分）">
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <div class="am-u-sm-9 am-u-sm-push-3">
+                            <button type="submit" class="am-btn am-btn-primary" id="btn_submit">保存</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+    $('#btn_submit').click(function(event) {
+        event.preventDefault();
+
+        var name = $('#course-name').val();
+        var type = $('#course-type').val();
+
+        if(name == '' || type == ''){
+            alert('请输入完整信息');
+        }else
+            $('.am-form').submit();
+        }
+    });
+    </script>
+    <!-- content end -->
+    <% include menu_sidebar_end.ejs %>
