@@ -79,7 +79,7 @@ module.exports = {
     },
     queryById: function(id, callback) {
         pool.getConnection(function(err, connection) {
-            var sql = 'select * from user where id ="' + id + '"';
+            var sql = 'select * from course where id ="' + id + '"';
             connection.query(sql, function(err, result) {
                 if(err){
                     callback({

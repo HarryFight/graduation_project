@@ -4,17 +4,17 @@
     <div class="admin-content">
 
         <div class="am-cf am-padding">
-            <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">课程列表</strong> / <small>Course list</small></div>
+            <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg"><%= sub_title %></strong> / <small>Students list</small></div>
         </div>
 
         <div class="am-g">
             <div class="am-u-sm-12 am-u-md-3">
                 <div class="am-form-group">
                     <select data-am-selected="{btnSize: 'sm'}" id='btn_chooseType'>
-                        <option value="0" actived>所有课程</option>
-                        <option value="1">必修</option>
-                        <option value="2">限选</option>
-                        <option value="3">选修</option>
+                        <option value="0" actived>所有用户</option>
+                        <option value="1">管理员</option>
+                        <option value="2">老师</option>
+                        <option value="3">学生</option>
                     </select>
                 </div>
             </div>
@@ -26,12 +26,12 @@
                         <thead>
                             <tr>
                                 <th class="table-id">ID</th>
-                                <th class="table-title">课程名</th>
+                                <th class="table-title">姓名</th>
                                 <th class="table-type">类别</th>
-                                <th>任课教师</th>
-                                <th>课程所在周</th>
-                                <th>课程所在星期</th>
-                                <th>课程所在节</th>
+                                <th>性别</th>
+                                <th>班级</th>
+                                <th>年级</th>
+                                <th>学院</th>
                                 <th class="table-set">操作</th>
                             </tr>
                         </thead>
@@ -55,14 +55,13 @@
             <td><#:= item.id #></td>
             <td><#:= item.name #></td>
             <td><#:= item.type #></td>
-            <th><#:= item.teacher #></th>
-            <th><#:= item.week_time #> 周</th>
-            <th>星期 <#:= item.day_time #></th>
-            <th>第 <#:= item.class_time #> 节</th>
+            <th><#:= item.sex #></th>
+            <th><#:= item.class #>班</th>
+            <th><#:= item.grade #>级</th>
+            <th><#:= item.college #></th>
             <td>
                 <div class="am-btn-toolbar">
                     <div class="am-btn-group am-btn-group-xs">
-                        <button class="am-btn am-btn-default am-btn-xs am-text-secondary xy-btn-a" data-id='<#:= item.id #>'><span class="am-icon-pencil-square-o"></span> 查看课程学生 </button>
                         <button class="am-btn am-btn-default am-text-danger xy-btn-delete" data-id='<#:= item.id #>'><span class="am-icon-trash-o"></span> 删除</button>
                     </div>
                 </div>
@@ -82,23 +81,21 @@
     })
 
     $('#itemPanel').delegate('.xy-btn-delete', 'click', function(event) {
-        var flag = confirm('确认要删除课程ID：'+$(this).attr('data-id'));
+        var flag = confirm('确认要删除用户ID：'+$(this).attr('data-id'));
         if(flag){
             deleteItem($(this).attr('data-id'));
         }
     });
-    $('#itemPanel').delegate('.xy-btn-a', 'click', function(event) {
-        var url = prefix + 'menu/m/studentList?cid='+$(this).attr('data-id')
-        location.href = url;
-    });
 
     function loadData(type){
         $('#itemPanel').html('<p>数据加载中</p>');
-        $.getJSON(prefix+"menu/m/getcourseList.do", {type:type}, function(json){
+        $.getJSON(prefix+"menu/m/getuserList.do", {type:type}, function(json){
             var data = json;
-            var typeMap = ['','必修','限选','选修']
+            var sexMap = ['','男','女'];
+            var typeMap = ['','管理员','老师','学生']
 
             $.each(data.data,function(index,item){
+                data.data[index].sex = sexMap[parseInt(item.sex)]
                 data.data[index].type = typeMap[parseInt(item.type)]
             })
 
@@ -113,7 +110,7 @@
         });
     }
     function deleteItem(id){
-        $.getJSON(prefix+"menu/m/deleteCourse.do", {id:id}, function(json){
+        $.getJSON(prefix+"menu/m/deleteUser.do", {id:id}, function(json){
             var data = json;
 
             alert(data.data.msg)

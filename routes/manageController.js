@@ -1,5 +1,6 @@
 var userDao = require('../dao/userDao.js');
 var courseDao = require('../dao/courseDao.js');
+var EventProxy = require('eventproxy');
 
 exports.checkIsManager = function(req, res, next) {
     var userId = req.session.userId;
@@ -144,4 +145,50 @@ exports.deleteCourse = function(req,res,next){
         })
     })
 
+}
+exports.getStudentListPage = function(req,res,next){
+    var userId = req.session.userId;
+    var cid= req.query.cid;
+
+    courseDao.queryById(cid,function(retData){
+        if(retData.id){
+            res.render('m_studentList', {
+                title: '【'+retData.name+'】学生列表',
+                type: 1,
+                sub_title:'【'+retData.name+'】学生列表'
+            })
+        }else{
+            req.flash('flag', 0);
+            req.flash('msg', 'cid'+cid+' 课程不存在');
+            res.redirect('../tips');
+        }
+    })
+}
+exports.getStudentListJson = function(req,res,next){
+    var userId = req.session.userId;
+    var cid= req.query.cid;
+
+    courseDao.queryById(cid,function(retData){
+        if(retData.id){
+            var studentArr = retData.students.split(',');
+            var ep = new EventProxy();
+            studentArr.forEach(function(item,index){
+                //分别取每个id的user数据
+                userDao.queryById(item,function(data){
+                    ep.emit('get_list',data);
+                })
+            })
+            ep.after('get_list',studentArr.length,function(list){
+                console.log(list);
+                res.json({
+                    data:list
+                })
+            })
+        }else{
+            res.json({
+                data:{},
+                msg:'错误的cid'
+            })
+        }
+    })
 }

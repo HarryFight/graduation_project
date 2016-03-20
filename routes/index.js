@@ -41,6 +41,8 @@ router.get('/menu/m/addCourse',manageC.getAddCoursePage);
 router.post('/menu/m/addCourse',manageC.doAddCourse);
 router.get('/menu/m/courseList',manageC.getCourseListPage);
 
+router.get('/menu/m/studentList',manageC.getStudentListPage);
+
 
 /* 所有接口 */
 
@@ -67,5 +69,13 @@ router.get('/menu/m/getcourseList.do',manageC.getCourseListJson);
  * @param  {[type]} '/menu/m/deleteUser.do' [description]
  */
 router.get('/menu/m/deleteCourse.do',manageC.deleteCourse);
+
+/**
+ * 获取某一课程的学生json    cid=1
+ * @param  {[type]} '/menu/m/getStudentList.do' [description]
+ * @param  {[type]} manageC.getStudentListJson  [description]
+ * @return {[type]}                             [description]
+ */
+router.get('/menu/m/getStudentList.do',manageC.getStudentListJson);
 
 module.exports = router;
