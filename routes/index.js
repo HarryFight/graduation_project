@@ -3,7 +3,15 @@ var router = express.Router();
 
 var loginC = require('./loginController.js');
 var menuC = require('./menuController.js');
-var manageC = require('./manageController.js')
+var manageC = require('./manageController.js');
+var studentC = require('./studentController.js');
+
+router.get('/?*',function(req,res,next){
+    //设置session用于调试
+    req.session.userId = 1;
+    next();
+})
+
 
 //登录页跳转
 router.get('/', function(req, res, next) {
@@ -43,7 +51,9 @@ router.get('/menu/m/courseList',manageC.getCourseListPage);
 
 router.get('/menu/m/studentList',manageC.getStudentListPage);
 
-
+/* 学生权限路由 */
+router.all('/menu/s/?*',studentC.checkIsStudent);
+router.get('/menu/s/classSchedule',studentC.getClassSchedulePage)
 
 /* 所有接口 */
 

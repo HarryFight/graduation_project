@@ -46,7 +46,7 @@
               <div class="am-modal-dialog">
                 <div class="am-modal-hd am-text-primary">新增【<%= name %>】课程学生</div>
                 <div class="am-modal-bd">
-                  请输入学生ID</br>（eg: 2,12）
+                  请输入学生ID</br>（一次填写一个）
                   <input type="text" class="am-modal-prompt-input">
                 </div>
                 <div class="am-modal-footer">
@@ -94,6 +94,7 @@
             console.log(prefix+"menu/m/addCourseStudent.do"+location.search+'&sid='+e.data)
             $.getJSON(prefix+"menu/m/addCourseStudent.do"+location.search+'&sid='+e.data, function(json){
                 console.log(json);
+                alert(json.msg);
                 loadData();
             })
           }

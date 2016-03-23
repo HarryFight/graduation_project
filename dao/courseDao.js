@@ -101,7 +101,7 @@ module.exports = {
     queryByKey: function(key,val,callback){
         //从连接池中获取连接
         pool.getConnection(function(err, connection) {
-            var sql = 'select * from user where '+ key +' = "' + val + '"';
+            var sql = 'select * from course where '+ key +' = "' + val + '"';
             connection.query(sql, function(err, result) {
                 if(err){
                     callback({
@@ -198,7 +198,7 @@ module.exports = {
     queryIsLogin: function(account, password, callback) {
         //从连接池中获取连接
         pool.getConnection(function(err, connection) {
-            var sql = 'select password,id from user where account = "' + account + '"';
+            var sql = 'select password,id from course where account = "' + account + '"';
             connection.query(sql, function(err, result) {
                 if(err){
                     callback({

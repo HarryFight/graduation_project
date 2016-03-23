@@ -1,5 +1,6 @@
 var userDao = require('../dao/userDao.js');
 var courseDao = require('../dao/courseDao.js');
+var infoDao = require('../dao/infoDao.js');
 var EventProxy = require('eventproxy');
 
 exports.checkIsManager = function(req, res, next) {
@@ -168,85 +169,84 @@ exports.getStudentListJson = function(req, res, next) {
     var userId = req.session.userId;
     var cid = req.query.cid;
 
-    courseDao.queryById(cid, function(retData) {
-        if (retData.id) {
-            var studentArr = retData.students.split(',');
-            var ep = new EventProxy();
-            studentArr.forEach(function(item, index) {
-                //分别取每个id的user数据
-                userDao.queryById(item, function(data) {
-                    ep.emit('get_list', data);
-                })
-            })
-            ep.after('get_list', studentArr.length, function(list) {
-                console.log('拉取的学生列表', list);
-                res.json({
-                    data: list
-                })
-            })
-        } else {
+    infoDao.queryAllByKey('cid',cid,function(retData){
+        if(!retData.length){
             res.json({
                 data: {},
                 msg: '错误的cid'
             })
         }
+        var ep = new EventProxy();
+        //取每条数据的sid
+        retData.forEach(function(item,index){
+            //分别取每个sid的user数据
+            userDao.queryById(item.sid, function(data) {
+                ep.emit('get_list', data);
+            })
+        })
+
+        ep.after('get_list', retData.length, function(list) {
+            console.log('拉取的学生列表', list);
+            res.json({
+                data: list
+            })
+        })
     })
 }
 exports.addCourseStudent = function(req, res, next) {
     var userId = req.session.userId;
     var cid = req.query.cid;
-    var sid = req.query.sid;
+    var sidArr = req.query.sid.split(',');
 
-    courseDao.queryById(cid, function(retData) {
-        if (retData.id) {
-            var old_studentArr = retData.students.split(',');
-            var add_studentArr = sid.split(',');
-
-            var new_student = arrJoin(old_studentArr, add_studentArr).join(',');
-
-            courseDao.updateById(cid, {
-                'students': new_student
-            }, function(ret) {
-                console.log(ret);
-                res.json(ret);
-            })
-        } else {
-            res.json({
-                code: 0,
-                data: {},
-                msg: '错误的cid'
-            })
-        }
-    })
-
+    if(sidArr.length > 1 ){
+        //一次新增多名学生
+        res.json({
+            code:0,
+            msg:'失败'
+        })
+    }else{
+        //一次增加一名学生
+        infoDao.queryAllByMap({
+            'cid':cid,
+            'sid':sidArr[0]
+        },function(retData){
+            if(retData.length > 0){
+                res.json({
+                    code: 0,
+                    data: {},
+                    msg: '该课程学生已经存在'
+                })
+            }else{
+                infoDao.add({
+                    'cid':cid,
+                    'sid':sidArr[0]
+                },function(ret){
+                    res.json(ret);
+                })
+            }
+        })
+    }
 }
 exports.deleteCourseStudent = function(req, res, next) {
     var userId = req.session.userId;
     var cid = req.query.cid;
-    var sid = req.query.sid;
+    var sidArr = req.query.sid.split(',');
 
-    courseDao.queryById(cid, function(retData) {
-        if (retData.id) {
-            var old_studentArr = retData.students.split(',');
-            var delete_studentArr = sid.split(',');
-
-            var new_student = arrRemove(old_studentArr,delete_studentArr).join(',');
-
-            courseDao.updateById(cid, {
-                'students': new_student
-            }, function(ret) {
-                console.log(ret);
-                res.json(ret);
-            })
-        } else {
-            res.json({
-                code: 0,
-                data: {},
-                msg: '错误的cid'
-            })
-        }
-    })
-
+    if(sidArr.length > 1 ){
+        //一次删除多名学生
+        res.json({
+            code:0,
+            msg:'失败'
+        })
+    }else{
+        //一次删除一名学生
+        infoDao.deleteByMap({
+            'cid':cid,
+            'sid':sidArr[0]
+        },function(ret){
+            res.json(ret)
+        })
+    }
 }
 /**
  * 两个数组先合并然后去重
