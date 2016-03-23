@@ -89,7 +89,7 @@
 
     function loadData(type){
         $('#itemPanel').html('<p>数据加载中</p>');
-        $.getJSON(prefix+"menu/m/getuserList.do", {type:type}, function(json){
+        $.getJSON(prefix+"menu/m/getUserList.do", {type:type}, function(json){
             var data = json;
             var sexMap = ['','男','女'];
             var typeMap = ['','管理员','老师','学生']

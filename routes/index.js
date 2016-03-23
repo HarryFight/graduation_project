@@ -44,13 +44,14 @@ router.get('/menu/m/courseList',manageC.getCourseListPage);
 router.get('/menu/m/studentList',manageC.getStudentListPage);
 
 
+
 /* 所有接口 */
 
 /**
  * 用户列表接口   type=1
- * @param  {[type]} '/menu/m/getuserList.do' [description]
+ * @param  {[type]} '/menu/m/getUserList.do' [description]
  */
-router.get('/menu/m/getuserList.do',manageC.getUserListJson);
+router.get('/menu/m/getUserList.do',manageC.getUserListJson);
 
 /**
  * 删除单个用户接口   id=1
@@ -60,22 +61,31 @@ router.get('/menu/m/deleteUser.do',manageC.deleteUser);
 
 /**
  * 课程列表接口   type=1
- * @param  {[type]} '/menu/m/getuserList.do' [description]
+ * @param  {[type]} '/menu/m/getCourseList.do' [description]
  */
-router.get('/menu/m/getcourseList.do',manageC.getCourseListJson);
+router.get('/menu/m/getCourseList.do',manageC.getCourseListJson);
 
 /**
  * 删除单个课程接口   id=1
- * @param  {[type]} '/menu/m/deleteUser.do' [description]
+ * @param  {[type]} '/menu/m/deleteCourse.do' [description]
  */
 router.get('/menu/m/deleteCourse.do',manageC.deleteCourse);
 
 /**
- * 获取某一课程的学生json    cid=1
+ * 获取某一课程的学生列表json接口    cid=1
  * @param  {[type]} '/menu/m/getStudentList.do' [description]
- * @param  {[type]} manageC.getStudentListJson  [description]
- * @return {[type]}                             [description]
  */
 router.get('/menu/m/getStudentList.do',manageC.getStudentListJson);
 
+/**
+ * 新增单个课程选课学生接口    cid=1&sid=1,2,3
+ * @param  {[type]} '/menu/m/addCourseStudent.do' [description]
+ */
+router.get('/menu/m/addCourseStudent.do',manageC.addCourseStudent);
+
+/**
+ * 删除单个课程选课学生接口   cid=1&sid=1,2,3
+ * @param  {[type]} '/menu/m/deleteCourseStudent.do' [description]
+ */
+router.get('/menu/m/deleteCourseStudent.do',manageC.deleteCourseStudent);
 module.exports = router;
