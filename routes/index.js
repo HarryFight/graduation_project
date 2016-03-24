@@ -8,7 +8,7 @@ var studentC = require('./studentController.js');
 
 router.get('/?*',function(req,res,next){
     //设置session用于调试
-    req.session.userId = 1;
+    req.session.userId = 2;
     next();
 })
 
@@ -39,6 +39,9 @@ router.post('/menu/user/info_modify',menuC.doUserInfoModify);
 router.get('/menu/user/psw_modify',menuC.getPswModifyPage);
 router.post('/menu/user/psw_modify',menuC.doPswModify);
 
+
+
+
 /* 管理员权限路由 */
 router.all('/menu/m/?*',manageC.checkIsManager);
 router.get('/menu/m/addUser',manageC.getAddUserPage);
@@ -50,12 +53,6 @@ router.post('/menu/m/addCourse',manageC.doAddCourse);
 router.get('/menu/m/courseList',manageC.getCourseListPage);
 
 router.get('/menu/m/studentList',manageC.getStudentListPage);
-
-/* 学生权限路由 */
-router.all('/menu/s/?*',studentC.checkIsStudent);
-router.get('/menu/s/classSchedule',studentC.getClassSchedulePage)
-
-/* 所有接口 */
 
 /**
  * 用户列表接口   type=1
@@ -98,4 +95,19 @@ router.get('/menu/m/addCourseStudent.do',manageC.addCourseStudent);
  * @param  {[type]} '/menu/m/deleteCourseStudent.do' [description]
  */
 router.get('/menu/m/deleteCourseStudent.do',manageC.deleteCourseStudent);
+
+
+
+
+
+/* 学生权限路由 */
+router.all('/menu/s/?*',studentC.checkIsStudent);
+router.get('/menu/s/classSchedule',studentC.getClassSchedulePage)
+
+/**
+ * 获取学生选课的列表信息（用于渲染课表） sid=1
+ * @param  {[type]} '/menu/s/getCourseList.do' [description]
+ */
+router.get('/menu/s/getCourseList.do',studentC.getCourseListJson);
+
 module.exports = router;

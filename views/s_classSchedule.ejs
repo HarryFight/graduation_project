@@ -1,18 +1,96 @@
 <% include menu_sidebar.ejs %>
-
-        <!-- content start -->
+<style>
+#tablePanel{
+    text-align: center;
+}
+#tablePanel th{
+    text-align: center;
+}
+.xy-table{
+    width: 80%;
+    margin: 0 auto;
+}
+.xy-item p{
+    margin: 5px;
+}
+</style>
+    <!-- content start -->
+    <div class="admin-content">
         <div class="admin-content">
-            <div class="admin-content">
-                <div class="am-cf am-padding">
-                    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg"><%= name %>的课表</strong> / <small>class Schedule</small></div>
-                </div>
-
-                <hr>
-
-
+            <div class="am-cf am-padding">
+                <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg"><%= name %>的课表</strong> / <small>class Schedule</small></div>
             </div>
 
-        </div>
-        <!-- content end -->
+            <hr>
+            <table class="table-main xy-table" id='tablePanel' border="1">
 
-<% include menu_sidebar_end.ejs %>
+            </table>
+            </div>
+        </div>
+
+    </div>
+    <script type="text/plain" id='tabelTmpl'>
+    <tbody>
+        <tr>
+            <th class=""></th>
+            <th class="th-normal">周一</th>
+            <th class="th-normal">周二</th>
+            <th class="th-normal">周三</th>
+            <th class="th-normal">周四</th>
+            <th class="th-normal">周五</th>
+            <th class="th-normal">周六</th>
+            <th class="th-normal">周日</th>
+        </tr>
+        <# for(var r=1; r<6 ;r++){ #>
+        <#  var rr = r*2 #>
+            <tr class='xy-r<#:= r #> xy-row'>
+            <td class='xy-class_time'><#:= rr-1 #>-<#:= rr #></td>
+            <# for(var l=1; l<8 ; l++){ #>
+                <td class='xy-l<#:= l #>-r<#:= r #> xy-item'>
+                <p class='xy-item-name am-text-primary'></p>
+                <p class='xy-item-teacher'></p>
+                <p class='xy-item-type'></p>
+                <p class='xy-item-weekTime'></p>
+                </td>
+            <# } #>
+            </tr>
+        <# } #>
+    </tbody>
+    </script>
+    <script src="http://localhost:3000/js/template.js"></script>
+    <script src="http://localhost:3000/js/common.js"></script>
+    <script type="text/javascript">
+        //生成课表空表格
+        template.config({sTag: '<#', eTag: '#>'});
+        var itemTmpl = template($('#tabelTmpl').text());
+        var htmlStr = itemTmpl({});
+        $('#tablePanel').text('');
+        $(htmlStr).appendTo('#tablePanel');
+
+        //拉取课程数据
+        $.getJSON(prefix+"menu/s/getCourseList.do",function(json){
+            var data = json.data;
+            var typeMap = ['','必修','选修','限选']
+
+            data.forEach(function(item,index){
+                //星期数处理
+                var dayArr = item.day_time.split(',');
+
+                for(var n=0 ; n<dayArr.length ;n++){
+                    var day = dayArr[n];
+                    var time = item.class_time;
+
+                    //渲染数据
+                    var itemDom = $('.xy-l'+day+'-r'+time);
+                    $(itemDom).find('.xy-item-name').text(item.name);
+                    $(itemDom).find('.xy-item-teacher').text(item.teacher);
+                    $(itemDom).find('.xy-item-type').text(typeMap[item.type]);
+                    $(itemDom).find('.xy-item-weekTime').text(item.week_time+'周');
+                }
+            })
+        })
+    </script>
+
+    <!-- content end -->
+
+    <% include menu_sidebar_end.ejs %>
