@@ -195,33 +195,4 @@ module.exports = {
             })
         })
     },
-    queryIsLogin: function(account, password, callback) {
-        //从连接池中获取连接
-        pool.getConnection(function(err, connection) {
-            var sql = 'select password,id from course where account = "' + account + '"';
-            connection.query(sql, function(err, result) {
-                if(err){
-                    callback({
-                        code:-1,
-                        msg:'数据库操作错误'
-                    })
-                    return;
-                }
-                if (result.length) {
-                    var res = result[0];
-                    if (res.password == password) {
-                        //返回成功和对应的userId
-                        callback(1, res.id);
-                    } else {
-                        callback(0);
-                    }
-                } else {
-                    callback(-1);
-                }
-
-                //释放连接
-                connection.release();
-            })
-        })
-    }
 }

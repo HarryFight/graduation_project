@@ -45,7 +45,11 @@ exports.getCourseListJson = function(req,res,next){
         retData.forEach(function(item,index){
             //分别取每个cid的course数据
             courseDao.queryById(item.cid, function(data) {
-                ep.emit('get_list', data);
+                var tId = data.teacher || 0;
+                userDao.queryById(tId,function(rData){
+                    data.teacher = rData.name;
+                    ep.emit('get_list', data);
+                })
             })
         })
 

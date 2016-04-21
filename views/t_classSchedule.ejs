@@ -72,7 +72,7 @@
         $(htmlStr).appendTo('#tablePanel');
 
         //拉取课程数据
-        $.getJSON(prefix+"menu/s/getCourseList.do",function(json){
+        $.getJSON(prefix+"menu/t/getCourseList.do",function(json){
             var data = json.data;
             var typeMap = ['','必修','选修','限选']
 

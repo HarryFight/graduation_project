@@ -5,10 +5,11 @@ var loginC = require('./loginController.js');
 var menuC = require('./menuController.js');
 var manageC = require('./manageController.js');
 var studentC = require('./studentController.js');
+var teacherC = require('./teacherController.js');
 
 router.get('/?*',function(req,res,next){
-    //设置session用于调试
-    req.session.userId = 2;
+    //设置session用于调试   1：管理 2：学生 3：老师
+    req.session.userId = 1;
     next();
 })
 
@@ -105,9 +106,24 @@ router.all('/menu/s/?*',studentC.checkIsStudent);
 router.get('/menu/s/classSchedule',studentC.getClassSchedulePage)
 
 /**
- * 获取学生选课的列表信息（用于渲染课表） sid=1
+ * 获取学生选课的列表信息（用于渲染课表） sid=2
  * @param  {[type]} '/menu/s/getCourseList.do' [description]
  */
 router.get('/menu/s/getCourseList.do',studentC.getCourseListJson);
+
+
+
+/* 老师权限路由 */
+router.all('/menu/t/?*',teacherC.checkIsTeacher);
+router.get('/menu/t/classSchedule',teacherC.getClassSchedulePage)
+
+/**
+ * 获取老师任课的列表信息（用于渲染课表） sid=3
+ * @param  {[type]} '/menu/t/getCourseList.do' [description]
+ */
+router.get('/menu/t/getCourseList.do',teacherC.getCourseListJson);
+
+
+
 
 module.exports = router;
