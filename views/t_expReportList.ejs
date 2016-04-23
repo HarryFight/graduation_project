@@ -4,7 +4,7 @@
     <div class="admin-content">
 
         <div class="am-cf am-padding">
-            <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">课程列表</strong> / <small>Course list</small></div>
+            <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">选择管理课程列表</strong> / <small>Course list</small></div>
         </div>
 
         <div class="am-g">
@@ -62,7 +62,7 @@
             <td>
                 <div class="am-btn-toolbar">
                     <div class="am-btn-group am-btn-group-xs">
-                        <button class="am-btn am-btn-default am-btn-xs am-text-secondary xy-btn-a" data-id='<#:= item.id #>'><span class="am-icon-pencil-square-o"></span> 查看实验指导书 </button>
+                        <button class="am-btn am-btn-default am-btn-xs am-text-secondary xy-btn-a" data-id='<#:= item.id #>'><span class="am-icon-pencil-square-o"></span> 进入学生列表</button>
                     </div>
                 </div>
             </td>
@@ -80,13 +80,13 @@
         loadData($('#btn_chooseType').val());
     })
     $('#itemPanel').delegate('.xy-btn-a', 'click', function(event) {
-        var url = prefix + 'menu/s/expGuide?cid='+$(this).attr('data-id')
+        var url = prefix + 'menu/t/expReportStudentList?cid='+$(this).attr('data-id')
         location.href = url;
     });
 
     function loadData(type){
         $('#itemPanel').html('<p>数据加载中</p>');
-        $.getJSON(prefix+"menu/s/getCourseList.do", {type:type}, function(json){
+        $.getJSON(prefix+"menu/t/getCourseList.do", {type:type}, function(json){
             var data = json;
             var typeMap = ['','必修','限选','选修']
 

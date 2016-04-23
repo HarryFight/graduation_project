@@ -7,11 +7,11 @@ var manageC = require('./manageController.js');
 var studentC = require('./studentController.js');
 var teacherC = require('./teacherController.js');
 
-router.get('/?*',function(req,res,next){
-    //设置session用于调试   1：管理 2：学生 3：老师
-    req.session.userId = 2;
-    next();
-})
+// router.get('/?*',function(req,res,next){
+//     //设置session用于调试   1：管理 2：学生 3：老师
+//     req.session.userId = 3;
+//     next();
+// })
 
 
 //登录页跳转
@@ -139,6 +139,11 @@ router.get('/menu/t/expGuideList',teacherC.getExpGuideListPage);
 router.get('/menu/t/expGuide',teacherC.getExpGuidePage);
 router.get('/menu/t/expGuideEdit',teacherC.getExpGuideEditPage);
 router.post('/menu/t/expGuideEdit',teacherC.expGuideEdit);
+
+//实验报告
+router.get('/menu/t/expReportList',teacherC.getExpReportListPage);
+router.get('/menu/t/expReportStudentList',teacherC.getExpReportStudentListPage);
+router.get('/menu/t/expReport',teacherC.getExpReportPage);
 
 /**
  * 获取老师任课的列表信息（用于渲染课表） sid=3

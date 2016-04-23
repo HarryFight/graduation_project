@@ -126,12 +126,13 @@ exports.getExpGuidePage = function(req, res, next) {
     var cid = req.query.cid;
 
     courseDao.queryById(cid,function(data){
+        var guide = data.exp_guide || '暂未提交';
         res.render('s_expGuide', {
             title: data.name+'|实验指导书',
             type: 3,
             name:data.name,
             cid:cid,
-            content: markdown.toHTML(data.exp_guide)
+            content: markdown.toHTML(guide)
         })
     })
 }
@@ -140,57 +141,98 @@ exports.getExpGuidePage = function(req, res, next) {
 exports.getExpReportListPage = function(req, res, next) {
     var userId = req.session.userId;
 
-    res.render('t_expGuideList', {
-        title: '提交/查看实验报告',
-        type: 2
+    res.render('s_expReportList', {
+        title: '实验报告课程',
+        type: 3
     })
 }
 exports.getExpReportPage = function(req, res, next) {
     var userId = req.session.userId;
     var cid = req.query.cid;
+    var sid = req.query.sid || userId;
+    infoDao.queryAllByMap({
+        'cid':cid,
+        'sid':sid
+    },function(data){
+        var report = data[0].exp_report || '暂未提交';
+        var sName = '';
+        var cName = '';
 
-    courseDao.queryById(cid,function(data){
-        res.render('expGuide', {
-            title: data.name+'|实验指导书',
-            type: 2,
-            name:data.name,
-            cid:cid,
-            content: markdown.toHTML(data.exp_guide)
+        var ep = new EventProxy();
+        userDao.queryById(sid,function(data){
+            sName = data.name;
+            ep.emit('get',data.name);
+        })
+        courseDao.queryById(cid,function(data){
+            cName = data.name;
+            ep.emit('get',data.name);
+        })
+
+        ep.after('get',2, function(list) {
+            console.log('信息', list);
+            res.render('s_expReport', {
+                title: sName+'|'+ cName +'|实验报告',
+                type: 3,
+                sName:sName,
+                cName:cName,
+                cid:cid,
+                content: markdown.toHTML(report)
+            })
         })
     })
 }
 exports.getExpReportEditPage = function(req, res, next) {
     var userId = req.session.userId;
     var cid = req.query.cid;
+    var sid = req.query.sid || userId;
 
-    courseDao.queryById(cid,function(data){
-        res.render('t_expGuide_modify', {
-            title: data.name+'|实验指导书',
-            type: 2,
-            name:data.name,
-            cid:cid,
-            content: data.exp_guide
+    infoDao.queryAllByMap({
+        'cid':cid,
+        'sid':sid
+    },function(data){
+        var report = data[0].exp_report || '暂未提交';
+        var sName = '';
+        var cName = '';
+
+        var ep = new EventProxy();
+        userDao.queryById(sid,function(data){
+            sName = data.name;
+            ep.emit('get',data.name);
+        })
+        courseDao.queryById(cid,function(data){
+            cName = data.name;
+            ep.emit('get',data.name);
+        })
+
+        ep.after('get',2, function(list) {
+            console.log('信息', list);
+            res.render('s_expReport_modify', {
+                title: sName+'|'+ cName +'|实验报告',
+                type: 3,
+                sName:sName,
+                cName:cName,
+                cid:cid,
+                content: report
+            })
         })
     })
 }
-eexports.expReportEdit = function(req, res, next) {
+exports.expReportEdit = function(req, res, next) {
     var userId = req.session.userId;
     var cid = req.body.cid;
+    var sid = req.query.sid || userId;
 
-    courseDao.updateById(cid,{
-        exp_guide:req.body.content
+    infoDao.updateByMap({
+        'cid':cid,
+        'sid':sid
+    },{
+        'exp_report':req.body.content
     },function(ret){
         if (ret.code == 1) {
-            courseDao.queryById(cid,function(data){
-                res.render('t_expGuide', {
-                    title: data.name+'|实验指导书',
-                    type: 2,
-                    name:data.name,
-                    cid:cid,
-                    content: markdown.toHTML(data.exp_guide)
-                })
-            })
-        }else {
+            req.flash('flag', 1);
+            req.flash('msg', '提交成功');
+            res.redirect('../tips');
+        }else{
             req.flash('flag', 0);
             req.flash('msg', ret.msg);
             res.redirect('../tips');

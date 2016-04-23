@@ -62,7 +62,7 @@
             <td>
                 <div class="am-btn-toolbar">
                     <div class="am-btn-group am-btn-group-xs">
-                        <button class="am-btn am-btn-default am-btn-xs am-text-secondary xy-btn-a" data-id='<#:= item.id #>'><span class="am-icon-pencil-square-o"></span> 查看实验指导书 </button>
+                        <button class="am-btn am-btn-default am-btn-xs am-text-secondary xy-btn-a" data-id='<#:= item.id #>'><span class="am-icon-pencil-square-o"></span> 查看/提交 实验报告 </button>
                     </div>
                 </div>
             </td>
@@ -80,7 +80,7 @@
         loadData($('#btn_chooseType').val());
     })
     $('#itemPanel').delegate('.xy-btn-a', 'click', function(event) {
-        var url = prefix + 'menu/s/expGuide?cid='+$(this).attr('data-id')
+        var url = prefix + 'menu/s/expReport?cid='+$(this).attr('data-id')
         location.href = url;
     });
 

@@ -180,12 +180,13 @@ exports.getExpGuidePage = function(req, res, next) {
     var cid = req.query.cid;
 
     courseDao.queryById(cid,function(data){
-        res.render('expGuide', {
+        var guide = data.exp_guide || '暂未提交';
+        res.render('t_expGuide', {
             title: data.name+'|实验指导书',
             type: 2,
             name:data.name,
             cid:cid,
-            content: markdown.toHTML(data.exp_guide)
+            content: markdown.toHTML(guide)
         })
     })
 }
@@ -194,12 +195,13 @@ exports.getExpGuideEditPage = function(req, res, next) {
     var cid = req.query.cid;
 
     courseDao.queryById(cid,function(data){
+        var guide = data.exp_guide || '暂未提交';
         res.render('t_expGuide_modify', {
             title: data.name+'|实验指导书',
             type: 2,
             name:data.name,
             cid:cid,
-            content: data.exp_guide
+            content: guide
         })
     })
 }
@@ -212,12 +214,13 @@ exports.expGuideEdit = function(req, res, next) {
     },function(ret){
         if (ret.code == 1) {
             courseDao.queryById(cid,function(data){
+                var guide = data.exp_guide || '暂未提交';
                 res.render('t_expGuide', {
                     title: data.name+'|实验指导书',
                     type: 2,
                     name:data.name,
                     cid:cid,
-                    content: markdown.toHTML(data.exp_guide)
+                    content: markdown.toHTML(guide)
                 })
             })
         }else {
@@ -225,5 +228,61 @@ exports.expGuideEdit = function(req, res, next) {
             req.flash('msg', ret.msg);
             res.redirect('../tips');
         }
+    })
+}
+//实验报告
+exports.getExpReportListPage = function(req, res, next) {
+    var userId = req.session.userId;
+
+    res.render('t_expReportList', {
+        title: '实验报告课程',
+        type: 2
+    })
+}
+exports.getExpReportStudentListPage = function(req, res, next) {
+    var userId = req.session.userId;
+    var cid = req.query.cid;
+
+    courseDao.queryById(cid,function(data){
+        res.render('t_expReportStudentList', {
+            title: '实验报告学生列表',
+            type: 2,
+            name:data.name
+        })
+    })
+}
+exports.getExpReportPage = function(req, res, next) {
+    var userId = req.session.userId;
+    var cid = req.query.cid;
+    var sid = req.query.sid || userId;
+    infoDao.queryAllByMap({
+        'cid':cid,
+        'sid':sid
+    },function(data){
+        var report = data[0].exp_report || '暂未提交';
+        var sName = '';
+        var cName = '';
+
+        var ep = new EventProxy();
+        userDao.queryById(sid,function(data){
+            sName = data.name;
+            ep.emit('get',data.name);
+        })
+        courseDao.queryById(cid,function(data){
+            cName = data.name;
+            ep.emit('get',data.name);
+        })
+
+        ep.after('get',2, function(list) {
+            console.log('信息', list);
+            res.render('t_expReport', {
+                title: sName+'|'+ cName +'|实验报告',
+                type: 2,
+                sName:sName,
+                cName:cName,
+                cid:cid,
+                content: markdown.toHTML(report)
+            })
+        })
     })
 }

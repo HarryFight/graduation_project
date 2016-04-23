@@ -9,11 +9,15 @@ exports.checkIsLogin = function(req, res, next) {
     }
 }
 exports.getTipsPage = function(req,res,next){
-    res.render('tips',{
-        title:'提示页',
-        type:req.session.userId,
-        flag:req.flash('flag'),
-        msg:req.flash('msg')
+    var userId = req.session.userId;
+
+    userDao.queryById(userId,function(data){
+        res.render('tips',{
+            title:'提示页',
+            type:data.type,
+            flag:req.flash('flag'),
+            msg:req.flash('msg')
+        })
     })
 }
 exports.getMenuPage = function(req, res, next) {
