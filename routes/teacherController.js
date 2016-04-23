@@ -3,6 +3,8 @@ var courseDao = require('../dao/courseDao.js');
 var infoDao = require('../dao/infoDao.js');
 var EventProxy = require('eventproxy');
 
+var markdown = require('markdown').markdown;
+
 exports.checkIsTeacher = function(req, res, next) {
     var userId = req.session.userId;
 
@@ -164,4 +166,64 @@ exports.updateScore = function(req,res,next){
         res.json(ret);
     })
 
+}
+exports.getExpGuideListPage = function(req, res, next) {
+    var userId = req.session.userId;
+
+    res.render('t_expGuideList', {
+        title: '提交/查看实验指导书',
+        type: 2
+    })
+}
+exports.getExpGuidePage = function(req, res, next) {
+    var userId = req.session.userId;
+    var cid = req.query.cid;
+
+    courseDao.queryById(cid,function(data){
+        res.render('expGuide', {
+            title: data.name+'|实验指导书',
+            type: 2,
+            name:data.name,
+            cid:cid,
+            content: markdown.toHTML(data.exp_guide)
+        })
+    })
+}
+exports.getExpGuideEditPage = function(req, res, next) {
+    var userId = req.session.userId;
+    var cid = req.query.cid;
+
+    courseDao.queryById(cid,function(data){
+        res.render('t_expGuide_modify', {
+            title: data.name+'|实验指导书',
+            type: 2,
+            name:data.name,
+            cid:cid,
+            content: data.exp_guide
+        })
+    })
+}
+exports.expGuideEdit = function(req, res, next) {
+    var userId = req.session.userId;
+    var cid = req.body.cid;
+
+    courseDao.updateById(cid,{
+        exp_guide:req.body.content
+    },function(ret){
+        if (ret.code == 1) {
+            courseDao.queryById(cid,function(data){
+                res.render('t_expGuide', {
+                    title: data.name+'|实验指导书',
+                    type: 2,
+                    name:data.name,
+                    cid:cid,
+                    content: markdown.toHTML(data.exp_guide)
+                })
+            })
+        }else {
+            req.flash('flag', 0);
+            req.flash('msg', ret.msg);
+            res.redirect('../tips');
+        }
+    })
 }

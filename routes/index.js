@@ -9,7 +9,7 @@ var teacherC = require('./teacherController.js');
 
 router.get('/?*',function(req,res,next){
     //设置session用于调试   1：管理 2：学生 3：老师
-    // req.session.userId = 2;
+    req.session.userId = 2;
     next();
 })
 
@@ -24,10 +24,6 @@ router.get('/login',loginC.getLoginPage);
 router.post('/login',loginC.doLogin);
 //logout
 router.get('/logout',loginC.doLogout);
-
-router.get('/building',function(req,res,next){
-    res.render('building');
-})
 
 /* 以下菜单内路由 */
 //权限控制
@@ -108,6 +104,17 @@ router.all('/menu/s/?*',studentC.checkIsStudent);
 router.get('/menu/s/classSchedule',studentC.getClassSchedulePage)
 router.get('/menu/s/searchScore',studentC.getsearchScorePage)
 
+//实验指导书
+router.get('/menu/s/expGuideList',studentC.getExpGuideListPage);
+router.get('/menu/s/expGuide',studentC .getExpGuidePage);
+
+//实验报告
+router.get('/menu/s/expReportList',studentC.getExpReportListPage);
+router.get('/menu/s/expReport',studentC.getExpReportPage);
+router.get('/menu/s/expReportEdit',studentC.getExpReportEditPage);
+router.post('/menu/s/expReportEdit',studentC.expReportEdit);
+
+
 /**
  * 获取学生选课的列表信息（用于渲染课表） sid=2
  * @param  {[type]} '/menu/s/getCourseList.do' [description]
@@ -126,6 +133,12 @@ router.get('/menu/t/studentList',teacherC.getStudentListPage);
 
 router.get('/menu/t/scoreManage',teacherC.getScoreManagePage);
 router.get('/menu/t/studentScore',teacherC.getStudentScorePage);
+
+//实验指导书
+router.get('/menu/t/expGuideList',teacherC.getExpGuideListPage);
+router.get('/menu/t/expGuide',teacherC.getExpGuidePage);
+router.get('/menu/t/expGuideEdit',teacherC.getExpGuideEditPage);
+router.post('/menu/t/expGuideEdit',teacherC.expGuideEdit);
 
 /**
  * 获取老师任课的列表信息（用于渲染课表） sid=3

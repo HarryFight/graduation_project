@@ -1,0 +1,29 @@
+<% include menu_sidebar.ejs %>
+    <!-- content start -->
+    <div class="admin-content">
+        <div class="am-cf am-padding">
+            <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">【<%= name %>】指导书内容修改</strong></div>
+        </div>
+
+        <hr/>
+
+        <div class="am-g">
+            <div class="am-u-sm-8">
+                <form class="am-form am-form-horizontal" action='./expGuideEdit' method="post">
+                    <div class="am-form-group">
+                        <div class="am-u-sm-12">
+                            本文本编辑支持markdown格式
+                            <textarea rows="10"  name="content" placeholder=""><%- content %></textarea>
+                            <input type="hidden" name="cid" value="<%= cid %>">
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <div class="am-u-sm-9">
+                            <button type="submit" class="am-btn am-btn-primary" id="btn_submit">保存修改</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <% include menu_sidebar_end.ejs %>

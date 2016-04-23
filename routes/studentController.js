@@ -3,6 +3,8 @@ var courseDao = require('../dao/courseDao.js');
 var infoDao = require('../dao/infoDao.js');
 var EventProxy = require('eventproxy');
 
+var markdown = require('markdown').markdown;
+
 exports.checkIsStudent = function(req,res,next){
     var userId = req.session.userId;
 
@@ -107,5 +109,91 @@ exports.getScoreListJson = function(req,res,next){
                 data: list
             })
         })
+    })
+}
+
+//实验指导书
+exports.getExpGuideListPage = function(req, res, next) {
+    var userId = req.session.userId;
+
+    res.render('s_expGuideList', {
+        title: '查看实验指导书',
+        type: 3
+    })
+}
+exports.getExpGuidePage = function(req, res, next) {
+    var userId = req.session.userId;
+    var cid = req.query.cid;
+
+    courseDao.queryById(cid,function(data){
+        res.render('s_expGuide', {
+            title: data.name+'|实验指导书',
+            type: 3,
+            name:data.name,
+            cid:cid,
+            content: markdown.toHTML(data.exp_guide)
+        })
+    })
+}
+
+//实验报告
+exports.getExpReportListPage = function(req, res, next) {
+    var userId = req.session.userId;
+
+    res.render('t_expGuideList', {
+        title: '提交/查看实验报告',
+        type: 2
+    })
+}
+exports.getExpReportPage = function(req, res, next) {
+    var userId = req.session.userId;
+    var cid = req.query.cid;
+
+    courseDao.queryById(cid,function(data){
+        res.render('expGuide', {
+            title: data.name+'|实验指导书',
+            type: 2,
+            name:data.name,
+            cid:cid,
+            content: markdown.toHTML(data.exp_guide)
+        })
+    })
+}
+exports.getExpReportEditPage = function(req, res, next) {
+    var userId = req.session.userId;
+    var cid = req.query.cid;
+
+    courseDao.queryById(cid,function(data){
+        res.render('t_expGuide_modify', {
+            title: data.name+'|实验指导书',
+            type: 2,
+            name:data.name,
+            cid:cid,
+            content: data.exp_guide
+        })
+    })
+}
+eexports.expReportEdit = function(req, res, next) {
+    var userId = req.session.userId;
+    var cid = req.body.cid;
+
+    courseDao.updateById(cid,{
+        exp_guide:req.body.content
+    },function(ret){
+        if (ret.code == 1) {
+            courseDao.queryById(cid,function(data){
+                res.render('t_expGuide', {
+                    title: data.name+'|实验指导书',
+                    type: 2,
+                    name:data.name,
+                    cid:cid,
+                    content: markdown.toHTML(data.exp_guide)
+                })
+            })
+        }else {
+            req.flash('flag', 0);
+            req.flash('msg', ret.msg);
+            res.redirect('../tips');
+        }
     })
 }
