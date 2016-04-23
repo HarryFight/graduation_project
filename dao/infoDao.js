@@ -118,14 +118,22 @@ module.exports = {
             })
         })
     },
-    deleteByMap: function(map, callback) {
-        pool.getConnection(function(err,connection){
+    updateByMap: function(map, data, callback) {
+        // acount password name sex class grade college 可以更改
+        pool.getConnection(function(err, connection) {
             var queryArr = [];
             for(var key in map){
                 queryArr.push(key +"="+map[key]);
             }
-            var sql = 'delete from course_info where '+queryArr.join(' and ');
-            connection.query(sql,function(err,result){
+
+            var fieldArr = [];
+            for (var key in data) {
+                fieldArr.push(key + '="' + data[key] + '"');
+            }
+
+            var sql = 'update course_info set ' + fieldArr.join(',') + ' where ' + queryArr.join(' and ');
+
+            connection.query(sql, function(err, result) {
                 if(err){
                     callback({
                         code:-1,
@@ -133,15 +141,16 @@ module.exports = {
                     })
                     return;
                 }
+
                 if (result.affectedRows > 0) {
                     callback({
                         code: 1,
-                        msg: '删除成功'
+                        msg: '操作成功'
                     })
                 } else {
                     callback({
                         code: 0,
-                        msg: '删除失败'
+                        msg:  '操作失败'
                     })
                 }
 
@@ -149,6 +158,6 @@ module.exports = {
                 connection.release();
             })
         })
-    },
+    }
 
 }

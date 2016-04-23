@@ -42,30 +42,24 @@
                         </ul>
                     </li>
                     <li><a href="http://localhost:3000/menu/s/classSchedule"><span class="am-icon-table"></span> 我的课表 </a></li>
-                    <li><a href="admin-table.html"><span class="am-icon-table"></span> 成绩查询 </a></li>
+                    <li><a href="http://localhost:3000/menu/s/searchScore"><span class="am-icon-table"></span> 成绩查询 </a></li>
                     <!-- end -->
                     <% }else if(type == 2){ %>
                     <!-- 这是老师的导航 -->
                     <li class="admin-parent">
                         <a class="am-cf" data-am-collapse="{target: '#collapse-nav1'}"><span class="am-icon-file"></span> 实验管理 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
                         <ul class="am-list am-collapse admin-sidebar-sub " id="collapse-nav1">
-                            <li><a href="admin-404.html"><span class="am-icon-bug"></span> 查看实验指导书 </a></li>
-                            <li><a href="admin-404.html"><span class="am-icon-bug"></span> 提交实验报告 </a></li>
+                            <li><a href="admin-404.html"><span class="am-icon-bug"></span> 查看学生实验报告 </a></li>
+                            <li><a href="admin-404.html"><span class="am-icon-bug"></span> 提交实验指导书 </a></li>
                         </ul>
                     </li>
-                    <li class="admin-parent">
-                        <a class="am-cf" data-am-collapse="{target: '#collapse-nav2'}"><span class="am-icon-file"></span> 成绩管理 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
-                        <ul class="am-list am-collapse admin-sidebar-sub " id="collapse-nav2">
-                            <li><a href="admin-404.html"><span class="am-icon-bug"></span> 成绩录入 </a></li>
-                            <li><a href="admin-404.html"><span class="am-icon-bug"></span> 成绩查看 </a></li>
-                        </ul>
-                    </li>
-                    <li class="admin-parent">
+                    <li><a href="http://localhost:3000/menu/t/scoreManage"><span class="am-icon-table"></span> 成绩管理 </a></li>
+                    <!-- <li class="admin-parent">
                         <a class="am-cf" data-am-collapse="{target: '#collapse-nav3'}"><span class="am-icon-file"></span> 实验设备管理 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
                         <ul class="am-list am-collapse admin-sidebar-sub " id="collapse-nav3">
                             <li><a href="admin-404.html"><span class="am-icon-bug"></span> 损坏登记 </a></li>
                         </ul>
-                    </li>
+                    </li> -->
                     <li><a href="http://localhost:3000/menu/t/classSchedule"><span class="am-icon-table"></span> 排课查询 </a></li>
                     <!-- end -->
                     <% }else if(type == 1){ %>
@@ -84,13 +78,13 @@
                             <li><a href="http://localhost:3000/menu/m/courseList"><span class="am-icon-bug"></span> 查看当前课程列表 </a></li>
                         </ul>
                     </li>
-                    <li class="admin-parent">
+                    <!-- <li class="admin-parent">
                         <a class="am-cf" data-am-collapse="{target: '#collapse-nav3'}"><span class="am-icon-file"></span> 实验设备管理 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
                         <ul class="am-list am-collapse admin-sidebar-sub " id="collapse-nav3">
-                            <li><a href="admin-404.html"><span class="am-icon-bug"></span> 新增设备 </a></li>
-                            <li><a href="admin-404.html"><span class="am-icon-bug"></span> 查看当前设备列表 </a></li>
+                            <li><a href="http://localhost:3000/building"><span class="am-icon-bug"></span> 新增设备 </a></li>
+                            <li><a href="http://localhost:3000/building"><span class="am-icon-bug"></span> 查看当前设备列表 </a></li>
                         </ul>
-                    </li>
+                    </li> -->
                     <!-- end -->
                     <% } %>
                 </ul>

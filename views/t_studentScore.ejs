@@ -1,0 +1,142 @@
+<% include menu_sidebar.ejs %>
+
+    <!-- content start -->
+    <div class="admin-content">
+
+        <div class="am-cf am-padding">
+            <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">【<%= name %>】学生成绩列表</strong> / <small>Students score list</small></div>
+        </div>
+
+        <div class="am-g">
+            <div class="am-u-sm-12">
+                    <table class="am-table am-table-striped am-table-hover table-main">
+                        <thead>
+                            <tr>
+                                <th class="table-id">ID</th>
+                                <th class="table-title">姓名</th>
+                                <th>性别</th>
+                                <th>班级</th>
+                                <th>成绩一</th>
+                                <th>成绩二</th>
+                                <th>总分</th>
+                                <th class="table-set">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id='itemPanel'>
+
+                        </tbody>
+                    </table>
+                    <div class="am-cf">
+                        共 <i id='itemLen'></i> 条记录
+                    </div>
+                    <hr />
+            </div>
+            <div class="am-modal am-modal-prompt" tabindex="-1" id="my-prompt">
+              <div class="am-modal-dialog">
+                <div class="am-modal-hd am-text-primary">【<b class='xy-name'></b>】-【<%= name %>】成绩管理</div>
+                <div class="am-modal-bd">
+                    <input type="hidden" class="am-modal-prompt-input xy-id">
+                  成绩一<input type="text" class="am-modal-prompt-input xy-score1">
+                  成绩二<input type="text" class="am-modal-prompt-input xy-score2">
+                  总分<input type="text" class="am-modal-prompt-input xy-score">
+                </div>
+                <div class="am-modal-footer">
+                  <span class="am-modal-btn" data-am-modal-confirm>提交</span>
+                  <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+    <!-- content end -->
+    <script type='text/plain' id="itemTmpl">
+    <# for(var i=0,len=data.length;i<len;i++){ #>
+        <# var item = data[i] #>
+        <tr>
+            <td><#:= item.id #></td>
+            <td><#:= item.name #></td>
+            <th><#:= item.sex #></th>
+            <th><#:= item.class #>班</th>
+            <# if(item.score1 || item.score1 == 0){ #>
+                <th><#:= item.score1 #>分</th>
+            <# }else{ #>
+                <th>未登记</th>
+            <# } #>
+            <# if(item.score2 || item.score2 == 0){ #>
+                <th><#:= item.score2 #>分</th>
+            <# }else{ #>
+                <th>未登记</th>
+            <# } #>
+            <# if(item.score || item.score == 0){ #>
+                <th><#:= item.score #>分</th>
+            <# }else{ #>
+                <th>未登记</th>
+            <# } #>
+            <td>
+                <div class="am-btn-toolbar">
+                    <div class="am-btn-group am-btn-group-xs">
+                        <button class="am-btn am-btn-default am-btn-xs am-text-secondary xy-btn-addScore"  data-id='<#:= item.id #>' data-name='<#:= item.name #>' data-score='<#:= item.score #>' data-score1='<#:= item.score1 #>' data-score2='<#:= item.score2 #>'><span class="am-icon-pencil"></span> 成绩登记/修改</button>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    <# } #>
+    </script>
+    <script src="http://localhost:3000/js/template.js"></script>
+    <script src="http://localhost:3000/js/common.js"></script>
+
+    <script>
+
+    loadData();
+
+    $('#itemPanel').delegate('.xy-btn-addScore', 'click', function(event) {
+        //初始化数据
+        $('.xy-name').text($(this).attr('data-name'))
+        $('.xy-score1').val($(this).attr('data-score1') == 'null' ? 0 : $(this).attr('data-score1'))
+        $('.xy-score2').val($(this).attr('data-score2') == 'null' ? 0 : $(this).attr('data-score2'))
+        $('.xy-score').val($(this).attr('data-score') == 'null' ? 0 : $(this).attr('data-score'))
+        $('.xy-id').val($(this).attr('data-id'))
+
+        $('#my-prompt').modal({
+          relatedTarget: this,
+          onConfirm: function(e) {
+            if(!e.data)return;
+            console.log(e.data);
+            console.log(prefix+"menu/t/updateScore.do"+location.search+'&sid='+ e.data[0]);
+            $.post(prefix+"menu/t/updateScore.do"+location.search+'&sid='+ e.data[0] ,{
+                score1 : e.data[1],
+                score2 : e.data[2],
+                score : e.data[3]
+            },function(json){
+                console.log(json);
+                alert(json.msg);
+                loadData();
+            })
+          }
+        });
+    })
+
+    function loadData(){
+        $('#itemPanel').html('<p>数据加载中</p>');
+        $.getJSON(prefix+"menu/t/getStudentScoreList.do"+location.search, function(json){
+            var data = json;
+            var sexMap = ['','男','女'];
+
+            $.each(data.data,function(index,item){
+                data.data[index].sex = sexMap[parseInt(item.sex)]
+            })
+
+            //避免和后端冲突
+            template.config({sTag: '<#', eTag: '#>'});
+            var itemTmpl = template($('#itemTmpl').text());
+            var htmlStr = itemTmpl(data);
+
+            $('#itemPanel').text('');
+            $(htmlStr).appendTo('#itemPanel');
+            $('#itemLen').text(data.data.length);
+        });
+    }
+
+    </script>
+
+    <% include menu_sidebar_end.ejs %>

@@ -55,6 +55,7 @@
                 <p class='xy-item-type'></p>
                 <p class='xy-item-weekTime'></p>
                 <p class='xy-item-classRoom'></p>
+                <a class='xy-item-listBtn'></a>
                 </td>
             <# } #>
             </tr>
@@ -91,6 +92,7 @@
                     $(itemDom).find('.xy-item-type').text(typeMap[item.type]);
                     $(itemDom).find('.xy-item-weekTime').text(item.week_time+'周');
                     $(itemDom).find('.xy-item-classRoom').text(item.class_room);
+                    $(itemDom).find('.xy-item-listBtn').text('查看该课程学生').attr('href', prefix + 'menu/t/studentList?cid='+ item.id);
                 }
             })
         })

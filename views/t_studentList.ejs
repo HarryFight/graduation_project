@@ -1,0 +1,81 @@
+<% include menu_sidebar.ejs %>
+
+    <!-- content start -->
+    <div class="admin-content">
+
+        <div class="am-cf am-padding">
+            <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">【<%= name %>】学生列表</strong> / <small>Students list</small></div>
+        </div>
+
+
+
+        <div class="am-g">
+            <div class="am-u-sm-12">
+                    <table class="am-table am-table-striped am-table-hover table-main">
+                        <thead>
+                            <tr>
+                                <th class="table-id">ID</th>
+                                <th class="table-title">姓名</th>
+                                <th>性别</th>
+                                <th>班级</th>
+                                <th>年级</th>
+                                <th>学院</th>
+                            </tr>
+                        </thead>
+                        <tbody id='itemPanel'>
+
+                        </tbody>
+                    </table>
+                    <div class="am-cf">
+                        共 <i id='itemLen'></i> 条记录
+                    </div>
+                    <hr />
+            </div>
+            
+        </div>
+    </div>
+    <!-- content end -->
+    <script type='text/plain' id="itemTmpl">
+    <# for(var i=0,len=data.length;i<len;i++){ #>
+        <# var item = data[i] #>
+        <tr>
+            <td><#:= item.id #></td>
+            <td><#:= item.name #></td>
+            <th><#:= item.sex #></th>
+            <th><#:= item.class #>班</th>
+            <th><#:= item.grade #>级</th>
+            <th><#:= item.college #></th>
+        </tr>
+    <# } #>
+    </script>
+    <script src="http://localhost:3000/js/template.js"></script>
+    <script src="http://localhost:3000/js/common.js"></script>
+
+    <script>
+
+    loadData();
+
+    function loadData(){
+        $('#itemPanel').html('<p>数据加载中</p>');
+        $.getJSON(prefix+"menu/t/getStudentList.do"+location.search, function(json){
+            var data = json;
+            var sexMap = ['','男','女'];
+
+            $.each(data.data,function(index,item){
+                data.data[index].sex = sexMap[parseInt(item.sex)]
+            })
+
+            //避免和后端冲突
+            template.config({sTag: '<#', eTag: '#>'});
+            var itemTmpl = template($('#itemTmpl').text());
+            var htmlStr = itemTmpl(data);
+
+            $('#itemPanel').text('');
+            $(htmlStr).appendTo('#itemPanel');
+            $('#itemLen').text(data.data.length);
+        });
+    }
+
+    </script>
+
+    <% include menu_sidebar_end.ejs %>

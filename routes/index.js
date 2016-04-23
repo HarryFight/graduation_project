@@ -9,7 +9,7 @@ var teacherC = require('./teacherController.js');
 
 router.get('/?*',function(req,res,next){
     //设置session用于调试   1：管理 2：学生 3：老师
-    req.session.userId = 1;
+    // req.session.userId = 2;
     next();
 })
 
@@ -25,6 +25,9 @@ router.post('/login',loginC.doLogin);
 //logout
 router.get('/logout',loginC.doLogout);
 
+router.get('/building',function(req,res,next){
+    res.render('building');
+})
 
 /* 以下菜单内路由 */
 //权限控制
@@ -54,7 +57,6 @@ router.post('/menu/m/addCourse',manageC.doAddCourse);
 router.get('/menu/m/courseList',manageC.getCourseListPage);
 
 router.get('/menu/m/studentList',manageC.getStudentListPage);
-
 /**
  * 用户列表接口   type=1
  * @param  {[type]} '/menu/m/getUserList.do' [description]
@@ -104,26 +106,44 @@ router.get('/menu/m/deleteCourseStudent.do',manageC.deleteCourseStudent);
 /* 学生权限路由 */
 router.all('/menu/s/?*',studentC.checkIsStudent);
 router.get('/menu/s/classSchedule',studentC.getClassSchedulePage)
+router.get('/menu/s/searchScore',studentC.getsearchScorePage)
 
 /**
  * 获取学生选课的列表信息（用于渲染课表） sid=2
  * @param  {[type]} '/menu/s/getCourseList.do' [description]
  */
 router.get('/menu/s/getCourseList.do',studentC.getCourseListJson);
-
+/**
+ * 获取学生所有课程成绩的列表信息 sid=2
+ */
+router.get('/menu/s/getScoreList.do',studentC.getScoreListJson);
 
 
 /* 老师权限路由 */
 router.all('/menu/t/?*',teacherC.checkIsTeacher);
 router.get('/menu/t/classSchedule',teacherC.getClassSchedulePage)
+router.get('/menu/t/studentList',teacherC.getStudentListPage);
+
+router.get('/menu/t/scoreManage',teacherC.getScoreManagePage);
+router.get('/menu/t/studentScore',teacherC.getStudentScorePage);
 
 /**
  * 获取老师任课的列表信息（用于渲染课表） sid=3
  * @param  {[type]} '/menu/t/getCourseList.do' [description]
  */
 router.get('/menu/t/getCourseList.do',teacherC.getCourseListJson);
-
-
-
+/**
+ * 获取某一课程的学生列表json接口    cid=1
+ * @param  {[type]} '/menu/t/getStudentList.do' [description]
+ */
+router.get('/menu/t/getStudentList.do',teacherC.getStudentListJson);
+/**
+ * 获取某一课程的学生成绩列表json接口    cid=1
+ */
+router.get('/menu/t/getStudentScoreList.do',teacherC.getStudentScoreListJson);
+/**
+ * 更新某一课程的某一学生成绩接口    cid=1&sid=1   post  score=[0,0,0]
+ */
+router.post('/menu/t/updateScore.do',teacherC.updateScore);
 
 module.exports = router;
